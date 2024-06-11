@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:style/button/bottom_sticky_overlay.dart';
 import 'package:style/button/primary_button.dart';
@@ -69,7 +68,7 @@ class _InviteCodeState extends State<InviteCode> {
       ),
       child: Column(
         children: [
-          Text(
+          SelectableText(
             widget.inviteCode,
             style: AppTextStyle.header1.copyWith(
               color: context.colorScheme.primary

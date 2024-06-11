@@ -1,6 +1,12 @@
+import 'dart:async';
+
+import 'package:data/api/auth/auth_models.dart';
+import 'package:data/api/space/space_models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yourspace_flutter/ui/flow/auth/sign_in/phone/verification/phone_verification_screen.dart';
+import 'package:yourspace_flutter/ui/flow/message/chat/chat_screen.dart';
+import 'package:yourspace_flutter/ui/flow/message/thread_list_screen.dart';
 import 'package:yourspace_flutter/ui/flow/onboard/pick_name_screen.dart';
 import 'package:yourspace_flutter/ui/flow/setting/contact_support/contact_support_screen.dart';
 import 'package:yourspace_flutter/ui/flow/setting/profile/profile_screen.dart';
@@ -24,6 +30,8 @@ class AppRoute {
   static const pathProfile = '/profile';
   static const pathEditSpace = '/space';
   static const pathContactSupport = '/contact-support';
+  static const pathMessage = '/message';
+  static const pathChat = '/chat';
 
   final String path;
   final String? name;
@@ -152,6 +160,19 @@ class AppRoute {
   static AppRoute get contactSupport =>
       AppRoute(pathContactSupport, builder: (_) => const ContactSupportScreen());
 
+  static AppRoute message(SpaceInfo space) {
+    return AppRoute(
+      pathMessage,
+      builder: (_) => ThreadListScreen(spaceInfo: space),
+    );
+  }
+  static AppRoute chat({required List<ApiUserInfo> users, required String spaceName}) {
+    return AppRoute(
+      pathMessage,
+      builder: (_) => ChatScreen(users: users, spaceName: spaceName),
+    );
+  }
+
   static final routes = [
     GoRoute(
       path: intro.path,
@@ -218,6 +239,14 @@ class AppRoute {
     ),
     GoRoute(
       path: pathContactSupport,
+      builder: (context, state) => state.widget(context),
+    ),
+    GoRoute(
+      path: pathMessage,
+      builder: (context, state) => state.widget(context),
+    ),
+    GoRoute(
+      path: pathChat,
       builder: (context, state) => state.widget(context),
     ),
   ];

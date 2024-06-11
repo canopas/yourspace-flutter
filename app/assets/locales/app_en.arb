@@ -12,6 +12,13 @@
   "common_cancel": "Cancel",
   "common_delete": "Delete",
   "common_okay": "Okay",
+  "common_today": "Today",
+  "common_yesterday": "Yesterday",
+  "common_now": "Now",
+  "common_just_now": "Just now",
+  "common_min_ago": "min ago",
+  "common_hour_ago": "hour ago",
+  "common_hours_ago": "hours ago",
   "common_verify": "Verify","commonMembers": "{memberCount} {memberCount, plural, =1{Member} other{Members}}",
   "@commonMembers": {
     "placeholders": {
@@ -107,6 +114,23 @@
   "settings_other_option_contact_support_text": "Contact support",
   "settings_other_option_about_us_text": "About us",
   "settings_other_option_sign_out_text": "Sign out",
+
+  "message_add_member_to_send_message_title": "Add members to send messages",
+  "message_add_member_to_send_message_subtitle": "At least one member needs to join your space to be able to chat.",
+  "message_add_new_member_title": "Add a new member",
+  "message_tap_to_send_new_message_text": "Tap on ‘+’ to send new message to anyone in your space",
+  "message_delete_thread_title": "Delete thread?",
+  "message_delete_thread_subtitle": "Are you sure you want to delete this thread? This action cannot be undone",
+  "message_member_count_text": " +{memberCount}",
+  "@message_member_count_text": {
+    "placeholders": {
+      "memberCount": {
+        "type": "int"
+      }
+    }
+  },
+
+  "chat_start_new_chat_title": "Start new chat",
 
   "edit_profile_title": "Edit profile",
   "edit_profile_first_name_title": "First name",

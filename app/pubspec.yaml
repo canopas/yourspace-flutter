@@ -54,6 +54,7 @@ dependencies:
   image_picker: ^1.1.1
   image_cropper: ^6.0.0
   fluttertoast: ^8.2.6
+  flutter_slidable: ^3.1.0
 
   # auth
   firebase_auth: ^4.20.0

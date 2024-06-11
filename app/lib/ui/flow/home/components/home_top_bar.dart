@@ -106,7 +106,11 @@ class _HomeTopBarState extends State<HomeTopBar> with TickerProviderStateMixin {
                     context: context,
                     icon: Assets.images.icMessage,
                     visibility: !expand,
-                    onTap: () {},
+                    onTap: () {
+                      if (widget.selectedSpace != null) {
+                        AppRoute.message(widget.selectedSpace!).push(context);
+                      }
+                    },
                   ),
                   SizedBox(width: expand ? 0 : 8),
                   _iconButton(
@@ -165,7 +169,7 @@ class _HomeTopBarState extends State<HomeTopBar> with TickerProviderStateMixin {
                         .copyWith(color: context.colorScheme.textPrimary),
                   ),
                 ),
-                if (widget.fetchingInviteCode || (widget.selectedSpace == null && widget.spaces.isNotEmpty)) ...[
+                if (widget.fetchingInviteCode || (widget.selectedSpace == null && widget.loading)) ...[
                   const AppProgressIndicator(size: AppProgressIndicatorSize.small)
                 ] else ...[
                   Icon(

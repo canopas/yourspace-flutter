@@ -9,6 +9,7 @@ class IconPrimaryButton extends StatelessWidget {
   final Color? iconColor;
   final double size;
   final double radius;
+  final Color? bgColor;
 
   const IconPrimaryButton({
     super.key,
@@ -19,6 +20,7 @@ class IconPrimaryButton extends StatelessWidget {
     this.iconColor,
     this.size = 40.0,
     this.radius = 8,
+    this.bgColor,
   });
 
   @override
@@ -26,10 +28,10 @@ class IconPrimaryButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 40,
-        height: 40,
+        width: size,
+        height: size,
         decoration: BoxDecoration(
-          color: context.colorScheme.containerLowOnSurface,
+          color: bgColor ?? context.colorScheme.containerLowOnSurface,
           borderRadius: BorderRadius.circular(radius),
         ),
         padding: const EdgeInsets.all(8),

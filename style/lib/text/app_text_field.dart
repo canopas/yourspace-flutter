@@ -12,7 +12,7 @@ class AppTextField extends StatelessWidget {
   final TextStyle? style;
   final bool expands;
   final bool enabled;
-  final BorderRadius? borderRadius;
+  final double? borderRadius;
   final AppTextFieldBorderType borderType;
   final double borderWidth;
   final TextInputAction? textInputAction;
@@ -105,8 +105,8 @@ class AppTextField extends StatelessWidget {
         isCollapsed: isCollapsed,
         hintText: hintText,
         hintStyle: hintStyle,
-        focusedBorder: _border(context, true),
-        enabledBorder: _border(context, false),
+        focusedBorder: _border(context, true, borderRadius ?? 8),
+        enabledBorder: _border(context, false, borderRadius ?? 8),
         contentPadding: contentPadding ??
             (borderType == AppTextFieldBorderType.outline
                 ? const EdgeInsets.symmetric(
@@ -118,7 +118,7 @@ class AppTextField extends StatelessWidget {
     ),
   );
 
-  InputBorder _border(BuildContext context, bool focused) {
+  InputBorder _border(BuildContext context, bool focused, double borderRadius) {
     switch (borderType) {
       case AppTextFieldBorderType.none:
         return const UnderlineInputBorder(
@@ -126,7 +126,7 @@ class AppTextField extends StatelessWidget {
         );
       case AppTextFieldBorderType.outline:
         return OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(borderRadius),
           borderSide: BorderSide(
             color: focused
                 ? context.colorScheme.primary

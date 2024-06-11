@@ -43,6 +43,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/ic_remove.svg
   String get icRemove => 'assets/images/ic_remove.svg';
 
+  /// File path: assets/images/ic_send_message.svg
+  String get icSendMessage => 'assets/images/ic_send_message.svg';
+
   /// File path: assets/images/ic_setting.svg
   String get icSetting => 'assets/images/ic_setting.svg';
 
@@ -74,6 +77,7 @@ class $AssetsImagesGen {
         icMessage,
         icPrivacyPolicy,
         icRemove,
+        icSendMessage,
         icSetting,
         icSignOut,
         intro1,
