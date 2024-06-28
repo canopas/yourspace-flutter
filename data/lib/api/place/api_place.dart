@@ -41,7 +41,7 @@ class ApiPlaceMemberSetting with _$ApiPlaceMemberSetting {
   const factory ApiPlaceMemberSetting({
     required String user_id,
     required String place_id,
-    required bool alert_enabled,
+    @Default(false) bool alert_enabled,
     required List<String> arrival_alert_for,
     required List<String> leave_alert_for,
   }) = _ApiPlaceMemberSetting;

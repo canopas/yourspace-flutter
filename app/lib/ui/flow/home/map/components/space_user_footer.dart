@@ -96,7 +96,7 @@ class _SpaceUserFooterState extends State<SpaceUserFooter> {
             background: context.colorScheme.surface,
             onTap: widget.onRelocateTap,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
           _iconButton(
             context: context,
             icon: Assets.images.icGeofenceIcon,

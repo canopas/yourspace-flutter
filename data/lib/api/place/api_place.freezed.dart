@@ -449,7 +449,7 @@ class _$ApiPlaceMemberSettingImpl extends _ApiPlaceMemberSetting {
   const _$ApiPlaceMemberSettingImpl(
       {required this.user_id,
       required this.place_id,
-      required this.alert_enabled,
+      this.alert_enabled = false,
       required final List<String> arrival_alert_for,
       required final List<String> leave_alert_for})
       : _arrival_alert_for = arrival_alert_for,
@@ -464,6 +464,7 @@ class _$ApiPlaceMemberSettingImpl extends _ApiPlaceMemberSetting {
   @override
   final String place_id;
   @override
+  @JsonKey()
   final bool alert_enabled;
   final List<String> _arrival_alert_for;
   @override
@@ -532,7 +533,7 @@ abstract class _ApiPlaceMemberSetting extends ApiPlaceMemberSetting {
   const factory _ApiPlaceMemberSetting(
           {required final String user_id,
           required final String place_id,
-          required final bool alert_enabled,
+          final bool alert_enabled,
           required final List<String> arrival_alert_for,
           required final List<String> leave_alert_for}) =
       _$ApiPlaceMemberSettingImpl;

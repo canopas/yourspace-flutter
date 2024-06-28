@@ -80,6 +80,7 @@ class _PlacesViewState extends ConsumerState<PlacesListView> {
                 placeName: item,
                 icon: _getPlacesIcon(item),
                 isSuggestion: true,
+                onTap: () {},
                 onDeletePlace: () {},
               );
             },
@@ -138,6 +139,9 @@ class _PlacesViewState extends ConsumerState<PlacesListView> {
       icon: icon,
       allowDelete: allowDelete,
       isDeleting: isDeleting,
+      onTap: () {
+        AppRoute.editPlaceScreen(item).push(context);
+      },
       onDeletePlace: () {
         notifier.onClickDeletePlace(item);
       },
@@ -150,57 +154,62 @@ class _PlacesViewState extends ConsumerState<PlacesListView> {
     bool isSuggestion = false,
     bool allowDelete = false,
     bool isDeleting = false,
+    required VoidCallback onTap,
     required VoidCallback onDeletePlace,
   }) {
     final enabled = !isSuggestion && allowDelete;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            height: 36,
-            width: 36,
-            decoration: BoxDecoration(
-              color: context.colorScheme.containerLowOnSurface,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Center(
-              child: SvgPicture.asset(
-                icon,
-                colorFilter: ColorFilter.mode(
-                  context.colorScheme.textPrimary,
-                  BlendMode.srcATop,
+    return OnTapScale(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: 36,
+              width: 36,
+              decoration: BoxDecoration(
+                color: context.colorScheme.containerLowOnSurface,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Center(
+                child: SvgPicture.asset(
+                  icon,
+                  colorFilter: ColorFilter.mode(
+                    context.colorScheme.textPrimary,
+                    BlendMode.srcATop,
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Text(
-              placeName,
-              style: AppTextStyle.subtitle3
-                  .copyWith(color: context.colorScheme.textPrimary),
-              overflow: TextOverflow.ellipsis,
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                placeName,
+                style: AppTextStyle.subtitle3
+                    .copyWith(color: context.colorScheme.textPrimary),
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
-          (isDeleting)
-              ? const AppProgressIndicator(size: AppProgressIndicatorSize.small)
-              : Visibility(
-                  visible: enabled,
-                  child: OnTapScale(
-                    onTap: onDeletePlace,
-                    child: SvgPicture.asset(
-                      Assets.images.icCloseIcon,
-                      colorFilter: ColorFilter.mode(
-                        context.colorScheme.textPrimary,
-                        BlendMode.srcATop,
+            (isDeleting)
+                ? const AppProgressIndicator(
+                    size: AppProgressIndicatorSize.small)
+                : Visibility(
+                    visible: enabled,
+                    child: OnTapScale(
+                      onTap: onDeletePlace,
+                      child: SvgPicture.asset(
+                        Assets.images.icCloseIcon,
+                        colorFilter: ColorFilter.mode(
+                          context.colorScheme.textPrimary,
+                          BlendMode.srcATop,
+                        ),
                       ),
                     ),
                   ),
-                ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -225,11 +234,11 @@ class _PlacesViewState extends ConsumerState<PlacesListView> {
 
   void _observeError() {
     ref.listen(placesListViewStateProvider.select((state) => state.error),
-            (previous, next) {
-          if (next != null) {
-            showErrorSnackBar(context, next.toString());
-          }
-        });
+        (previous, next) {
+      if (next != null) {
+        showErrorSnackBar(context, next.toString());
+      }
+    });
   }
 
   void _observeShowDeletePlaceDialog() {

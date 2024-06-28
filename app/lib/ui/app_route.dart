@@ -1,9 +1,11 @@
+import 'package:data/api/place/api_place.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:yourspace_flutter/ui/flow/auth/sign_in/phone/verification/phone_verification_screen.dart';
 import 'package:yourspace_flutter/ui/flow/geofence/add/locate/locate_on_map_view.dart';
 import 'package:yourspace_flutter/ui/flow/geofence/add/placename/choose_place_name_view.dart';
+import 'package:yourspace_flutter/ui/flow/geofence/edit/edit_place_view.dart';
 import 'package:yourspace_flutter/ui/flow/geofence/places/places_list_view.dart';
 import 'package:yourspace_flutter/ui/flow/onboard/pick_name_screen.dart';
 import 'package:yourspace_flutter/ui/flow/permission/enable_permission_view.dart';
@@ -35,6 +37,7 @@ class AppRoute {
   static const pathAddNewPlace = '/add-new-place';
   static const pathLocateOnMap = "/locate_on_map";
   static const pathChoosePlace = "/choose_place";
+  static const pathEditPlace = "/edit_place";
 
   final String path;
   final String? name;
@@ -193,6 +196,13 @@ class AppRoute {
     );
   }
 
+  static AppRoute editPlaceScreen(ApiPlace place) {
+    return AppRoute(
+      pathEditPlace,
+      builder: (_) => EditPlaceView(place: place),
+    );
+  }
+
   static final routes = [
     GoRoute(
         path: intro.path,
@@ -277,6 +287,10 @@ class AppRoute {
     ),
     GoRoute(
       path: pathChoosePlace,
+      builder: (context, state) => state.widget(context),
+    ),
+    GoRoute(
+      path: pathEditPlace,
       builder: (context, state) => state.widget(context),
     )
   ];

@@ -49,7 +49,7 @@ _$ApiPlaceMemberSettingImpl _$$ApiPlaceMemberSettingImplFromJson(
     _$ApiPlaceMemberSettingImpl(
       user_id: json['user_id'] as String,
       place_id: json['place_id'] as String,
-      alert_enabled: json['alert_enabled'] as bool,
+      alert_enabled: json['alert_enabled'] as bool? ?? false,
       arrival_alert_for: (json['arrival_alert_for'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),

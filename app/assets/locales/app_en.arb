@@ -7,6 +7,7 @@
   "common_get_started": "Get Started",
   "common_next": "Next",
   "common_yes": "Yes",
+  "common_save": "Save",
   "common_cancel": "Cancel",
   "common_delete": "Delete",
   "common_okay": "Okay",
@@ -197,5 +198,17 @@
   "choose_place_add_place_btn_text": "Add place",
   "choose_place_prompt_added_title_text": "{placeName} Added",
   "choose_place_prompt_sub_title_text": "You will be notified when members of your space arrive/leave this place",
-  "choose_place_prompt_got_it_btn_text": "Got it"
+  "choose_place_prompt_got_it_btn_text": "Got it",
+
+  "@_EditPlaces": {
+  },
+  "edit_place_title_text": "Edit place",
+  "edit_place_getting_address_text": "Getting Address…",
+  "edit_place_detail_title_text": "Place detail",
+  "edit_place_get_notified_title_text": "Get notified when...",
+  "edit_place_arrives_text": "Arrives",
+  "edit_place_leaves_text": "Leaves",
+  "edit_place_delete_place_btn_text": "Delete place",
+  "edit_place_only_admin_edit_text": "Only admin can edit or delete this place.",
+  "edit_place_delete_dialog_sub_title_text": "Are you sure you want to delete this place? This action cannot be undone."
 }
