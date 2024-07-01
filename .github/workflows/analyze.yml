@@ -19,9 +19,13 @@ jobs:
       - name: Retrieve the secret and decode it to file
         env:
           FIREBASE_OPTIONS_BASE64: ${{ secrets.FIREBASE_OPTIONS_BASE64 }}
+          CONFIG_DART_BASE64: ${{ secrets.CONFIG_DART_BASE64 }}
         run: |
           cd app
           echo $FIREBASE_OPTIONS_BASE64 | base64 -di > lib/firebase_options.dart
+          cd ../data
+          echo $CONFIG_DART_BASE64 | base64 -di > lib/config.dart
+          cd ..
 
       - name: Install dependencies
         run: |

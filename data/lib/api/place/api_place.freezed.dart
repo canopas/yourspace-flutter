@@ -27,6 +27,7 @@ mixin _$ApiPlace {
   double get latitude => throw _privateConstructorUsedError;
   double get longitude => throw _privateConstructorUsedError;
   double get radius => throw _privateConstructorUsedError;
+  @TimeStampJsonConverter()
   DateTime? get created_at => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -48,7 +49,7 @@ abstract class $ApiPlaceCopyWith<$Res> {
       double latitude,
       double longitude,
       double radius,
-      DateTime? created_at});
+      @TimeStampJsonConverter() DateTime? created_at});
 }
 
 /// @nodoc
@@ -126,7 +127,7 @@ abstract class _$$ApiPlaceImplCopyWith<$Res>
       double latitude,
       double longitude,
       double radius,
-      DateTime? created_at});
+      @TimeStampJsonConverter() DateTime? created_at});
 }
 
 /// @nodoc
@@ -196,8 +197,8 @@ class _$ApiPlaceImpl extends _ApiPlace {
       required this.name,
       required this.latitude,
       required this.longitude,
-      required this.radius,
-      this.created_at})
+      this.radius = 200.0,
+      @TimeStampJsonConverter() this.created_at})
       : super._();
 
   factory _$ApiPlaceImpl.fromJson(Map<String, dynamic> json) =>
@@ -216,8 +217,10 @@ class _$ApiPlaceImpl extends _ApiPlace {
   @override
   final double longitude;
   @override
+  @JsonKey()
   final double radius;
   @override
+  @TimeStampJsonConverter()
   final DateTime? created_at;
 
   @override
@@ -272,8 +275,8 @@ abstract class _ApiPlace extends ApiPlace {
       required final String name,
       required final double latitude,
       required final double longitude,
-      required final double radius,
-      final DateTime? created_at}) = _$ApiPlaceImpl;
+      final double radius,
+      @TimeStampJsonConverter() final DateTime? created_at}) = _$ApiPlaceImpl;
   const _ApiPlace._() : super._();
 
   factory _ApiPlace.fromJson(Map<String, dynamic> json) =
@@ -294,6 +297,7 @@ abstract class _ApiPlace extends ApiPlace {
   @override
   double get radius;
   @override
+  @TimeStampJsonConverter()
   DateTime? get created_at;
   @override
   @JsonKey(ignore: true)
@@ -551,4 +555,229 @@ abstract class _ApiPlaceMemberSetting extends ApiPlaceMemberSetting {
   @JsonKey(ignore: true)
   _$$ApiPlaceMemberSettingImplCopyWith<_$ApiPlaceMemberSettingImpl>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+ApiNearbyPlace _$ApiNearbyPlaceFromJson(Map<String, dynamic> json) {
+  return _ApiNearbyPlace.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ApiNearbyPlace {
+  String get id => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  String get formatted_address => throw _privateConstructorUsedError;
+  double get lat => throw _privateConstructorUsedError;
+  double get lng => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ApiNearbyPlaceCopyWith<ApiNearbyPlace> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ApiNearbyPlaceCopyWith<$Res> {
+  factory $ApiNearbyPlaceCopyWith(
+          ApiNearbyPlace value, $Res Function(ApiNearbyPlace) then) =
+      _$ApiNearbyPlaceCopyWithImpl<$Res, ApiNearbyPlace>;
+  @useResult
+  $Res call(
+      {String id,
+      String name,
+      String formatted_address,
+      double lat,
+      double lng});
+}
+
+/// @nodoc
+class _$ApiNearbyPlaceCopyWithImpl<$Res, $Val extends ApiNearbyPlace>
+    implements $ApiNearbyPlaceCopyWith<$Res> {
+  _$ApiNearbyPlaceCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? formatted_address = null,
+    Object? lat = null,
+    Object? lng = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      formatted_address: null == formatted_address
+          ? _value.formatted_address
+          : formatted_address // ignore: cast_nullable_to_non_nullable
+              as String,
+      lat: null == lat
+          ? _value.lat
+          : lat // ignore: cast_nullable_to_non_nullable
+              as double,
+      lng: null == lng
+          ? _value.lng
+          : lng // ignore: cast_nullable_to_non_nullable
+              as double,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$ApiNearbyPlaceImplCopyWith<$Res>
+    implements $ApiNearbyPlaceCopyWith<$Res> {
+  factory _$$ApiNearbyPlaceImplCopyWith(_$ApiNearbyPlaceImpl value,
+          $Res Function(_$ApiNearbyPlaceImpl) then) =
+      __$$ApiNearbyPlaceImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      String name,
+      String formatted_address,
+      double lat,
+      double lng});
+}
+
+/// @nodoc
+class __$$ApiNearbyPlaceImplCopyWithImpl<$Res>
+    extends _$ApiNearbyPlaceCopyWithImpl<$Res, _$ApiNearbyPlaceImpl>
+    implements _$$ApiNearbyPlaceImplCopyWith<$Res> {
+  __$$ApiNearbyPlaceImplCopyWithImpl(
+      _$ApiNearbyPlaceImpl _value, $Res Function(_$ApiNearbyPlaceImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? formatted_address = null,
+    Object? lat = null,
+    Object? lng = null,
+  }) {
+    return _then(_$ApiNearbyPlaceImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      formatted_address: null == formatted_address
+          ? _value.formatted_address
+          : formatted_address // ignore: cast_nullable_to_non_nullable
+              as String,
+      lat: null == lat
+          ? _value.lat
+          : lat // ignore: cast_nullable_to_non_nullable
+              as double,
+      lng: null == lng
+          ? _value.lng
+          : lng // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ApiNearbyPlaceImpl extends _ApiNearbyPlace {
+  const _$ApiNearbyPlaceImpl(
+      {required this.id,
+      required this.name,
+      required this.formatted_address,
+      required this.lat,
+      required this.lng})
+      : super._();
+
+  factory _$ApiNearbyPlaceImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ApiNearbyPlaceImplFromJson(json);
+
+  @override
+  final String id;
+  @override
+  final String name;
+  @override
+  final String formatted_address;
+  @override
+  final double lat;
+  @override
+  final double lng;
+
+  @override
+  String toString() {
+    return 'ApiNearbyPlace(id: $id, name: $name, formatted_address: $formatted_address, lat: $lat, lng: $lng)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ApiNearbyPlaceImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.formatted_address, formatted_address) ||
+                other.formatted_address == formatted_address) &&
+            (identical(other.lat, lat) || other.lat == lat) &&
+            (identical(other.lng, lng) || other.lng == lng));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, formatted_address, lat, lng);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ApiNearbyPlaceImplCopyWith<_$ApiNearbyPlaceImpl> get copyWith =>
+      __$$ApiNearbyPlaceImplCopyWithImpl<_$ApiNearbyPlaceImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ApiNearbyPlaceImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ApiNearbyPlace extends ApiNearbyPlace {
+  const factory _ApiNearbyPlace(
+      {required final String id,
+      required final String name,
+      required final String formatted_address,
+      required final double lat,
+      required final double lng}) = _$ApiNearbyPlaceImpl;
+  const _ApiNearbyPlace._() : super._();
+
+  factory _ApiNearbyPlace.fromJson(Map<String, dynamic> json) =
+      _$ApiNearbyPlaceImpl.fromJson;
+
+  @override
+  String get id;
+  @override
+  String get name;
+  @override
+  String get formatted_address;
+  @override
+  double get lat;
+  @override
+  double get lng;
+  @override
+  @JsonKey(ignore: true)
+  _$$ApiNearbyPlaceImplCopyWith<_$ApiNearbyPlaceImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

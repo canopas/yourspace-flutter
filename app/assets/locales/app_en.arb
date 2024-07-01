@@ -182,5 +182,20 @@
   "places_list_suggestion_gym_text": "Gym",
   "places_list_suggestion_library_text": "Library",
   "places_list_suggestion_local_park_text": "Local park",
-  "places_list_delete_dialog_content_text": "Are you sure you want to delete this place? This action cannot be undone."
+  "places_list_delete_dialog_content_text": "Are you sure you want to delete this place? This action cannot be undone.",
+
+  "add_new_place_title": "Add a new place",
+  "add_new_place_suggestion_text": "Some suggestions...",
+  "add_new_place_search_hint_text": "Search address and location name",
+  "add_new_place_location_on_map_text": "Locate on map",
+
+  "locate_on_map_title": "Locate on Map",
+
+  "choose_place_screen_title": "Choose place name",
+  "choose_place_search_hint_text": "Enter place name",
+  "choose_place_suggestion_text": "Some suggestions...",
+  "choose_place_add_place_btn_text": "Add place",
+  "choose_place_prompt_added_title_text": "{placeName} Added",
+  "choose_place_prompt_sub_title_text": "You will be notified when members of your space arrive/leave this place",
+  "choose_place_prompt_got_it_btn_text": "Got it"
 }
