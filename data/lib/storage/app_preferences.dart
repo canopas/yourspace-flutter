@@ -43,3 +43,8 @@ final currentSpaceId = createPrefProvider<String?>(
   prefKey: "current_space_id",
   defaultValue: null,
 );
+
+final lastBatteryDialogPod = createPrefProvider<String?>(
+  prefKey: 'show_battery_dialog',
+  defaultValue: null,
+);

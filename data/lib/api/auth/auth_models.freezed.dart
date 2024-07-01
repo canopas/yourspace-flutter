@@ -399,7 +399,7 @@ mixin _$ApiSession {
   String? get device_name => throw _privateConstructorUsedError;
   String? get device_id => throw _privateConstructorUsedError;
   int? get created_at => throw _privateConstructorUsedError;
-  String? get battery_status => throw _privateConstructorUsedError;
+  double? get battery_pct => throw _privateConstructorUsedError;
   int? get app_version => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -423,7 +423,7 @@ abstract class $ApiSessionCopyWith<$Res> {
       String? device_name,
       String? device_id,
       int? created_at,
-      String? battery_status,
+      double? battery_pct,
       int? app_version});
 }
 
@@ -448,7 +448,7 @@ class _$ApiSessionCopyWithImpl<$Res, $Val extends ApiSession>
     Object? device_name = freezed,
     Object? device_id = freezed,
     Object? created_at = freezed,
-    Object? battery_status = freezed,
+    Object? battery_pct = freezed,
     Object? app_version = freezed,
   }) {
     return _then(_value.copyWith(
@@ -484,10 +484,10 @@ class _$ApiSessionCopyWithImpl<$Res, $Val extends ApiSession>
           ? _value.created_at
           : created_at // ignore: cast_nullable_to_non_nullable
               as int?,
-      battery_status: freezed == battery_status
-          ? _value.battery_status
-          : battery_status // ignore: cast_nullable_to_non_nullable
-              as String?,
+      battery_pct: freezed == battery_pct
+          ? _value.battery_pct
+          : battery_pct // ignore: cast_nullable_to_non_nullable
+              as double?,
       app_version: freezed == app_version
           ? _value.app_version
           : app_version // ignore: cast_nullable_to_non_nullable
@@ -513,7 +513,7 @@ abstract class _$$ApiSessionImplCopyWith<$Res>
       String? device_name,
       String? device_id,
       int? created_at,
-      String? battery_status,
+      double? battery_pct,
       int? app_version});
 }
 
@@ -536,7 +536,7 @@ class __$$ApiSessionImplCopyWithImpl<$Res>
     Object? device_name = freezed,
     Object? device_id = freezed,
     Object? created_at = freezed,
-    Object? battery_status = freezed,
+    Object? battery_pct = freezed,
     Object? app_version = freezed,
   }) {
     return _then(_$ApiSessionImpl(
@@ -572,10 +572,10 @@ class __$$ApiSessionImplCopyWithImpl<$Res>
           ? _value.created_at
           : created_at // ignore: cast_nullable_to_non_nullable
               as int?,
-      battery_status: freezed == battery_status
-          ? _value.battery_status
-          : battery_status // ignore: cast_nullable_to_non_nullable
-              as String?,
+      battery_pct: freezed == battery_pct
+          ? _value.battery_pct
+          : battery_pct // ignore: cast_nullable_to_non_nullable
+              as double?,
       app_version: freezed == app_version
           ? _value.app_version
           : app_version // ignore: cast_nullable_to_non_nullable
@@ -596,7 +596,7 @@ class _$ApiSessionImpl extends _ApiSession {
       this.device_name,
       this.device_id,
       this.created_at,
-      this.battery_status,
+      this.battery_pct,
       this.app_version})
       : super._();
 
@@ -622,13 +622,13 @@ class _$ApiSessionImpl extends _ApiSession {
   @override
   final int? created_at;
   @override
-  final String? battery_status;
+  final double? battery_pct;
   @override
   final int? app_version;
 
   @override
   String toString() {
-    return 'ApiSession(id: $id, user_id: $user_id, platform: $platform, fcm_token: $fcm_token, session_active: $session_active, device_name: $device_name, device_id: $device_id, created_at: $created_at, battery_status: $battery_status, app_version: $app_version)';
+    return 'ApiSession(id: $id, user_id: $user_id, platform: $platform, fcm_token: $fcm_token, session_active: $session_active, device_name: $device_name, device_id: $device_id, created_at: $created_at, battery_pct: $battery_pct, app_version: $app_version)';
   }
 
   @override
@@ -650,8 +650,8 @@ class _$ApiSessionImpl extends _ApiSession {
                 other.device_id == device_id) &&
             (identical(other.created_at, created_at) ||
                 other.created_at == created_at) &&
-            (identical(other.battery_status, battery_status) ||
-                other.battery_status == battery_status) &&
+            (identical(other.battery_pct, battery_pct) ||
+                other.battery_pct == battery_pct) &&
             (identical(other.app_version, app_version) ||
                 other.app_version == app_version));
   }
@@ -668,7 +668,7 @@ class _$ApiSessionImpl extends _ApiSession {
       device_name,
       device_id,
       created_at,
-      battery_status,
+      battery_pct,
       app_version);
 
   @JsonKey(ignore: true)
@@ -695,7 +695,7 @@ abstract class _ApiSession extends ApiSession {
       final String? device_name,
       final String? device_id,
       final int? created_at,
-      final String? battery_status,
+      final double? battery_pct,
       final int? app_version}) = _$ApiSessionImpl;
   const _ApiSession._() : super._();
 
@@ -719,7 +719,7 @@ abstract class _ApiSession extends ApiSession {
   @override
   int? get created_at;
   @override
-  String? get battery_status;
+  double? get battery_pct;
   @override
   int? get app_version;
   @override

@@ -1,9 +1,7 @@
 {
   "app_title": "YourSpace",
   "app_tag_line": "Stay Close, Anywhere!",
-
   "alert_confirm_default_title": "Are you sure",
-
   "@_COMMON": {
   },
   "common_get_started": "Get Started",
@@ -12,22 +10,23 @@
   "common_cancel": "Cancel",
   "common_delete": "Delete",
   "common_okay": "Okay",
-  "common_verify": "Verify","commonMembers": "{memberCount} {memberCount, plural, =1{Member} other{Members}}",
+  "common_add": "Add",
+  "common_verify": "Verify",
+  "common_go_to_setting": "Go to settings",
+  "commonMembers": "{memberCount} {memberCount, plural, =1{Member} other{Members}}",
   "@commonMembers": {
     "placeholders": {
       "memberCount": {}
     }
   },
-
-   "@_INTRO":{
-   },
+  "@_INTRO": {
+  },
   "intro_1_title": "Live location",
   "intro_2_title": "Receive alerts",
   "intro_3_title": "Location history",
-   "intro_1_subTitle": "Share your location seamlessly, connecting with just a click.",
-   "intro_2_subTitle": "Stay in the know with instant alerts – whether loved ones enter or leave.",
-   "intro_3_subTitle": "Simplify your connections and insights – explore drive reports, location history effortlessly.",
-
+  "intro_1_subTitle": "Share your location seamlessly, connecting with just a click.",
+  "intro_2_subTitle": "Stay in the know with instant alerts – whether loved ones enter or leave.",
+  "intro_3_subTitle": "Simplify your connections and insights – explore drive reports, location history effortlessly.",
   "@_AUTH": {
   },
   "sign_in_options_continue_with_google_btn_title": "Continue with Google",
@@ -143,5 +142,45 @@
   "contact_support_description_title": "Description",
   "contact_support_attachment": "Attachment (if any)",
   "contact_support_submit_title": "Submit",
-  "contact_support_feedback_alert_message": "Thanks! Your feedback has been recorded."
+  "contact_support_feedback_alert_message": "Thanks! Your feedback has been recorded.",
+
+  "@_Permission": {
+  },
+  "enable_permission_top_bar_text": "Enable permission",
+  "enable_permission_screen_title": "For an effective user experience on YourSpace, it’s necessary to enable these permissions.",
+  "enable_location_access_title": "Location Access",
+  "enable_location_access_sub_title": "For seamless sharing of your live location with a trusted contact requires permission for location access.",
+  "enable_background_location_access_message_text": "Please grant either Approximate location access permission or Fine location access permission",
+  "enable_background_location_access_title": "Background location access",
+  "enable_background_location_access_sub_title": "Granting background location permission allows you to effortlessly stay connected with trusted ones, ensuring seamless coordination and peace of mind in knowing their whereabouts.\n\nLocation permission > Select allow all the time",
+  "enable_notification_access_title": "Notification Access",
+  "enable_notification_access_sun_title": "Stay connected and receive timely updates by enabling notification permission for check-ins, alerts, and messages from your trusted one.",
+  "enable_permission_footer": "We prioritize the security of your information and want to assure you that we do not share your data with any third-party entities.",
+  "enable_location_prompt_title": "Location access required",
+  "enable_location_prompt_sub_title_1": "YourSpace’s location-sharing feature works correctly when it can access your location all the time. This ensures it gives you accurate, real-time updates.",
+  "enable_location_prompt_sub_title_2": "Go to settings > Allow all the time",
+  "enable_location_service_title": "Turn on location/GPS",
+  "enable_location_service_message": "Your location/GPS setting must be turned on for YourSpace to work. Please turn on location/GPS in the settings.",
+
+  "permission_footer_title": "Stay closed to your loved one.",
+  "permission_footer_missing_location_permission_title": "Location sharing is currently not possible.",
+  "permission_footer_subtitle": "Allow YourSpace to access your location data.",
+  "permission_footer_location_off_subtitle": "Device location/GPS is off. Please turn it on!",
+  "permission_footer_missing_location_permission_subtitle": "Some permissions are missing - grant access.",
+
+  "battery_optimization_dialog_title":"Turn off Battery Optimization for Location Sharing",
+  "battery_optimization_dialog_message": "For location sharing feature to work properly for your Spaces, turn off Battery Optimization in your phone settings for the YourSpace app. This won't affect your other apps.",
+  "battery_optimization_dialog_btn_change_now":"Change now",
+
+  "@_PLACES": {
+  },
+  "places_list_title": "Places",
+  "places_list_add_place_btn_text": "Add place",
+  "places_list_suggestion_home_text": "Home",
+  "places_list_suggestion_work_text": "Work",
+  "places_list_suggestion_school_text": "School",
+  "places_list_suggestion_gym_text": "Gym",
+  "places_list_suggestion_library_text": "Library",
+  "places_list_suggestion_local_park_text": "Local park",
+  "places_list_delete_dialog_content_text": "Are you sure you want to delete this place? This action cannot be undone."
 }

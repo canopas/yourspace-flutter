@@ -15,7 +15,9 @@ _$ApiPlaceImpl _$$ApiPlaceImplFromJson(Map<String, dynamic> json) =>
       latitude: (json['latitude'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
       radius: (json['radius'] as num).toDouble(),
-      created_at: (json['created_at'] as num?)?.toInt(),
+      created_at: json['created_at'] == null
+          ? null
+          : DateTime.parse(json['created_at'] as String),
     );
 
 Map<String, dynamic> _$$ApiPlaceImplToJson(_$ApiPlaceImpl instance) =>
@@ -27,7 +29,7 @@ Map<String, dynamic> _$$ApiPlaceImplToJson(_$ApiPlaceImpl instance) =>
       'latitude': instance.latitude,
       'longitude': instance.longitude,
       'radius': instance.radius,
-      'created_at': instance.created_at,
+      'created_at': instance.created_at?.toIso8601String(),
     };
 
 _$ApiPlaceMemberSettingImpl _$$ApiPlaceMemberSettingImplFromJson(

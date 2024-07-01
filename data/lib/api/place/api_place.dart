@@ -16,11 +16,11 @@ class ApiPlace with _$ApiPlace {
     required double latitude,
     required double longitude,
     required double radius,
-    int? created_at,
+    DateTime? created_at,
   }) = _ApiPlace;
 
   factory ApiPlace.fromJson(Map<String, dynamic> data) =>
-      _$ApiPlaceFromJson(data);
+      _$ApiPlaceFromJson(_convertTimestamps(data));
 
   factory ApiPlace.fromFireStore(
       DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -30,6 +30,12 @@ class ApiPlace with _$ApiPlace {
   }
 
   Map<String, dynamic> toFireStore(ApiPlace space) => space.toJson();
+}
+
+Map<String, dynamic> _convertTimestamps(Map<String, dynamic> json) {
+  json.update('created_at', (value) => (value as Timestamp).toDate().toString(),
+      ifAbsent: () => null);
+  return json;
 }
 
 @freezed
@@ -54,5 +60,6 @@ class ApiPlaceMemberSetting with _$ApiPlaceMemberSetting {
     return ApiPlaceMemberSetting.fromJson(data!);
   }
 
-  Map<String, dynamic> toFireStore(ApiPlaceMemberSetting space) => space.toJson();
+  Map<String, dynamic> toFireStore(ApiPlaceMemberSetting space) =>
+      space.toJson();
 }

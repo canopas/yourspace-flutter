@@ -54,6 +54,7 @@ jobs:
           APKSIGN_KEYSTORE_PASS: ${{ secrets.APKSIGN_KEYSTORE_PASS }}
           APKSIGN_KEY_ALIAS: ${{ secrets.APKSIGN_KEY_ALIAS }}
           APKSIGN_KEY_PASS: ${{ secrets.APKSIGN_KEY_PASS }}
+          MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
 
         run: |
           echo  $APKSIGN_KEYSTORE_BASE64 | base64 -di > release.keystore

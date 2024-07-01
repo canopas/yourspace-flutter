@@ -9,10 +9,10 @@ import '../auth/api_user_service.dart';
 import '../auth/auth_models.dart';
 
 final apiSpaceServiceProvider = StateProvider((ref) => ApiSpaceService(
-  ref.read(firestoreProvider),
-  ref.read(currentUserPod),
-  ref.read(apiUserServiceProvider),
-));
+      ref.read(firestoreProvider),
+      ref.read(currentUserPod),
+      ref.read(apiUserServiceProvider),
+    ));
 
 class ApiSpaceService {
   final FirebaseFirestore _db;

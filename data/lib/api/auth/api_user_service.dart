@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:data/api/network/client.dart';
 import 'package:data/service/device_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../storage/app_preferences.dart';
 import 'auth_models.dart';
 
@@ -12,7 +13,7 @@ final apiUserServiceProvider = StateProvider((ref) => ApiUserService(
       ref.read(currentUserJsonPod.notifier),
       ref.read(currentUserSessionJsonPod.notifier),
       ref.read(currentUserSessionJsonPod.notifier),
-  ref.read(isOnboardingShownPod.notifier),
+      ref.read(isOnboardingShownPod.notifier),
     ));
 
 class ApiUserService {
@@ -23,8 +24,13 @@ class ApiUserService {
   final StateController<String?> userSessionJsonNotifier;
   final StateController<bool?> onBoardNotifier;
 
-  ApiUserService(this._db, this._device, this.userJsonNotifier,
-      this.currentUserSpaceId, this.userSessionJsonNotifier, this.onBoardNotifier);
+  ApiUserService(
+      this._db,
+      this._device,
+      this.userJsonNotifier,
+      this.currentUserSpaceId,
+      this.userSessionJsonNotifier,
+      this.onBoardNotifier);
 
   CollectionReference get _userRef =>
       _db.collection("users").withConverter<ApiUser>(
@@ -115,8 +121,9 @@ class ApiUserService {
   }
 
   Future<void> deactivateOldSessions(String userId) async {
-    final querySnapshot =
-    await _sessionRef(userId).where("session_active", isEqualTo: true).get();
+    final querySnapshot = await _sessionRef(userId)
+        .where("session_active", isEqualTo: true)
+        .get();
     for (var doc in querySnapshot.docs) {
       await doc.reference.update({"session_active": false});
     }
@@ -140,14 +147,16 @@ class ApiUserService {
     });
   }
 
-  Future<void> updateBatteryPct(String userId, String sessionId, double batteryPct) async {
+  Future<void> updateBatteryPct(
+      String userId, String sessionId, double batteryPct) async {
     await _sessionRef(userId).doc(sessionId).update({
       "battery_pct": batteryPct,
       "updated_at": FieldValue.serverTimestamp(),
     });
   }
 
-  Future<void> updateSessionState(String id, String sessionId, int state) async {
+  Future<void> updateSessionState(
+      String id, String sessionId, int state) async {
     await _sessionRef(id).doc(sessionId).update({
       "user_state": state,
       "updated_at": FieldValue.serverTimestamp(),
@@ -162,6 +171,18 @@ class ApiUserService {
       return querySnapshot.docs.first.data() as ApiSession;
     }
     return null;
+  }
+
+  Stream<ApiSession?> getUserSessionStream(String userId) {
+    return Stream.fromFuture(_sessionRef(userId)
+        .where("session_active", isEqualTo: true)
+        .get()
+        .then((querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs.first.data() as ApiSession;
+      }
+      return null;
+    }));
   }
 
   Future<void> signOut() async {

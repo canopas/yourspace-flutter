@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:style/extenstions/context_extenstions.dart';
+
+import '../theme/colors.dart';
+import '../theme/theme.dart';
 
 class IconPrimaryButton extends StatelessWidget {
   final Function() onTap;
@@ -9,6 +11,7 @@ class IconPrimaryButton extends StatelessWidget {
   final Color? iconColor;
   final double size;
   final double radius;
+  final Color? backgroundColor;
 
   const IconPrimaryButton({
     super.key,
@@ -17,19 +20,23 @@ class IconPrimaryButton extends StatelessWidget {
     this.enabled = true,
     required this.icon,
     this.iconColor,
+    this.backgroundColor,
     this.size = 40.0,
-    this.radius = 8,
+    this.radius = 30,
   });
 
   @override
   Widget build(BuildContext context) {
+    final AppColorScheme colorScheme = appColorSchemeOf(context);
+    final bg = backgroundColor ?? colorScheme.containerLow;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: context.colorScheme.containerLowOnSurface,
+          color: bg,
           borderRadius: BorderRadius.circular(radius),
         ),
         padding: const EdgeInsets.all(8),

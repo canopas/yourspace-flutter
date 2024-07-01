@@ -2,6 +2,7 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.gms.google-services"
 }
 
 def localProperties = new Properties()
@@ -51,6 +52,14 @@ android {
         versionName flutterVersionName
         multiDexEnabled true
 
+        def mapsApiKey = System.getenv('MAPS_API_KEY')
+        if (mapsApiKey != null) {
+            manifestPlaceholders += [MAPS_API_KEY: mapsApiKey]
+        } else if (localProperties.containsKey('MAPS_API_KEY')) {
+            manifestPlaceholders += [MAPS_API_KEY: localProperties.getProperty('MAPS_API_KEY')]
+        } else {
+            manifestPlaceholders += [MAPS_API_KEY: '']
+        }
     }
 
     signingConfigs {

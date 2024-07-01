@@ -27,7 +27,7 @@ mixin _$ApiPlace {
   double get latitude => throw _privateConstructorUsedError;
   double get longitude => throw _privateConstructorUsedError;
   double get radius => throw _privateConstructorUsedError;
-  int? get created_at => throw _privateConstructorUsedError;
+  DateTime? get created_at => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,7 +48,7 @@ abstract class $ApiPlaceCopyWith<$Res> {
       double latitude,
       double longitude,
       double radius,
-      int? created_at});
+      DateTime? created_at});
 }
 
 /// @nodoc
@@ -105,7 +105,7 @@ class _$ApiPlaceCopyWithImpl<$Res, $Val extends ApiPlace>
       created_at: freezed == created_at
           ? _value.created_at
           : created_at // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -126,7 +126,7 @@ abstract class _$$ApiPlaceImplCopyWith<$Res>
       double latitude,
       double longitude,
       double radius,
-      int? created_at});
+      DateTime? created_at});
 }
 
 /// @nodoc
@@ -181,7 +181,7 @@ class __$$ApiPlaceImplCopyWithImpl<$Res>
       created_at: freezed == created_at
           ? _value.created_at
           : created_at // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as DateTime?,
     ));
   }
 }
@@ -218,7 +218,7 @@ class _$ApiPlaceImpl extends _ApiPlace {
   @override
   final double radius;
   @override
-  final int? created_at;
+  final DateTime? created_at;
 
   @override
   String toString() {
@@ -273,7 +273,7 @@ abstract class _ApiPlace extends ApiPlace {
       required final double latitude,
       required final double longitude,
       required final double radius,
-      final int? created_at}) = _$ApiPlaceImpl;
+      final DateTime? created_at}) = _$ApiPlaceImpl;
   const _ApiPlace._() : super._();
 
   factory _ApiPlace.fromJson(Map<String, dynamic> json) =
@@ -294,7 +294,7 @@ abstract class _ApiPlace extends ApiPlace {
   @override
   double get radius;
   @override
-  int? get created_at;
+  DateTime? get created_at;
   @override
   @JsonKey(ignore: true)
   _$$ApiPlaceImplCopyWith<_$ApiPlaceImpl> get copyWith =>

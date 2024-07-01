@@ -49,7 +49,7 @@ _$ApiSessionImpl _$$ApiSessionImplFromJson(Map<String, dynamic> json) =>
       device_name: json['device_name'] as String?,
       device_id: json['device_id'] as String?,
       created_at: (json['created_at'] as num?)?.toInt(),
-      battery_status: json['battery_status'] as String?,
+      battery_pct: (json['battery_pct'] as num?)?.toDouble(),
       app_version: (json['app_version'] as num?)?.toInt(),
     );
 
@@ -63,7 +63,7 @@ Map<String, dynamic> _$$ApiSessionImplToJson(_$ApiSessionImpl instance) =>
       'device_name': instance.device_name,
       'device_id': instance.device_id,
       'created_at': instance.created_at,
-      'battery_status': instance.battery_status,
+      'battery_pct': instance.battery_pct,
       'app_version': instance.app_version,
     };
 
