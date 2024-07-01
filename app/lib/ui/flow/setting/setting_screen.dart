@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:data/api/space/space_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,6 +10,7 @@ import 'package:yourspace_flutter/domain/extenstions/context_extenstions.dart';
 import 'package:yourspace_flutter/ui/app_route.dart';
 import 'package:yourspace_flutter/ui/components/app_page.dart';
 import 'package:yourspace_flutter/ui/components/error_snakebar.dart';
+import 'package:yourspace_flutter/ui/components/profile_picture.dart';
 import 'package:yourspace_flutter/ui/components/resume_detector.dart';
 import 'package:yourspace_flutter/ui/flow/setting/setting_view_model.dart';
 
@@ -63,6 +63,9 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
   }
 
   Widget _profileView(BuildContext context, SettingViewState state) {
+    final profileImageUrl = state.currentUser?.profile_image ?? '';
+    final firstLetter = state.currentUser?.userNameFirstLetter ?? '';
+
     return GestureDetector(
       onTap: () {
         AppRoute.profile.push(context);
@@ -84,7 +87,12 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
             padding: const EdgeInsets.all(16),
             child: Row(
               children: [
-                _profileImageView(context, state),
+                ProfileImage(
+                  profileImageUrl: profileImageUrl,
+                  firstLetter: firstLetter,
+                  style: AppTextStyle.header3
+                      .copyWith(color: context.colorScheme.textPrimaryDark),
+                ),
                 const SizedBox(width: 16),
                 Text(
                   state.currentUser?.fullName ?? '',
@@ -264,34 +272,6 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           context.colorScheme.textPrimary,
           BlendMode.srcATop,
         ),
-      ),
-    );
-  }
-
-  Widget _profileImageView(BuildContext context, SettingViewState state) {
-    final profileImageUrl = state.currentUser?.profile_image ?? '';
-    final firstLetter = state.currentUser?.userNameFirstLetter ?? '';
-
-    return SizedBox(
-      width: 64,
-      height: 64,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(32),
-        child: profileImageUrl.isNotEmpty
-            ? CachedNetworkImage(
-                imageUrl: profileImageUrl,
-                placeholder: (context, url) => const AppProgressIndicator(size: AppProgressIndicatorSize.small),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-                fit: BoxFit.cover,
-              )
-            : Container(
-                color: context.colorScheme.containerInverseHigh,
-                child: Center(
-                  child: Text(firstLetter,
-                      style: AppTextStyle.header1
-                          .copyWith(color: context.colorScheme.textPrimary)),
-                ),
-              ),
       ),
     );
   }

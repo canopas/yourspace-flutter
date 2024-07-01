@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:data/api/auth/auth_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +13,7 @@ import 'package:yourspace_flutter/domain/extenstions/context_extenstions.dart';
 import 'package:yourspace_flutter/domain/extenstions/widget_extensions.dart';
 import 'package:yourspace_flutter/ui/components/app_page.dart';
 import 'package:yourspace_flutter/ui/components/error_snakebar.dart';
+import 'package:yourspace_flutter/ui/components/profile_picture.dart';
 import 'package:yourspace_flutter/ui/flow/setting/space/edit_space_view_model.dart';
 
 import '../../../components/alert.dart';
@@ -182,9 +182,11 @@ class _EditSpaceScreenState extends ConsumerState<EditSpaceScreen> {
 
   Widget _locationSharingItem(BuildContext context, ApiUserInfo member,
       {bool isCurrentUser = false, bool locationEnabled = false}) {
+    final profileImageUrl = member.user.profile_image ?? '';
+    final firstLetter = member.user.userNameFirstLetter;
     return Row(
       children: [
-        _profileImageView(context, member, isCurrentUser),
+        ProfileImage(profileImageUrl: profileImageUrl, firstLetter: firstLetter, size: 40),
         const SizedBox(width: 16),
         Text(
           member.user.fullName,
@@ -206,34 +208,6 @@ class _EditSpaceScreenState extends ConsumerState<EditSpaceScreen> {
           inactiveTrackColor: context.colorScheme.containerLowOnSurface,
         ),
       ],
-    );
-  }
-
-  Widget _profileImageView(BuildContext context, ApiUserInfo member, bool isCurrentUser) {
-    final profileImageUrl = member.user.profile_image ?? '';
-    final firstLetter = member.user.userNameFirstLetter;
-
-    return SizedBox(
-      width: 40,
-      height: 40,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: profileImageUrl.isNotEmpty
-            ? CachedNetworkImage(
-                imageUrl: profileImageUrl,
-                placeholder: (context, url) => const AppProgressIndicator(
-                    size: AppProgressIndicatorSize.small),
-                fit: BoxFit.cover,
-              )
-            : Container(
-                color: isCurrentUser ? context.colorScheme.alert : context.colorScheme.primary,
-                child: Center(
-                  child: Text(firstLetter,
-                      style: AppTextStyle.header3
-                          .copyWith(color: context.colorScheme.textPrimary)),
-                ),
-              ),
-      ),
     );
   }
 

@@ -16,6 +16,7 @@ import 'package:yourspace_flutter/domain/extenstions/widget_extensions.dart';
 import 'package:yourspace_flutter/ui/app_route.dart';
 import 'package:yourspace_flutter/ui/components/app_page.dart';
 import 'package:yourspace_flutter/ui/components/error_snakebar.dart';
+import 'package:yourspace_flutter/ui/components/resume_detector.dart';
 import 'package:yourspace_flutter/ui/flow/message/thread_list_view_model.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -41,27 +42,27 @@ class _ThreadListScreenState extends ConsumerState<ThreadListScreen> {
   void initState() {
     super.initState();
     runPostFrame(() {
-      notifier = ref.watch(threadListViewStateProvider.notifier);
       notifier.setSpace(widget.spaceInfo);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(threadListViewStateProvider);
+    notifier = ref.watch(threadListViewStateProvider(widget.spaceInfo.space.id).notifier);
+    final state = ref.watch(threadListViewStateProvider(widget.spaceInfo.space.id));
     _observeInviteScreenNavigation();
     _observeError();
 
     return AppPage(
       title: widget.spaceInfo.space.name,
-      body: _body(context, state),
+      body: ResumeDetector(
+        onResume: () => notifier.listenThreads(widget.spaceInfo.space.id),
+          child: _body(context, state),
+      ),
       floatingActionButton: widget.spaceInfo.members.length >= 2
       ? LargeIconButton(
         onTap: () {
-          AppRoute.chat(
-              users: widget.spaceInfo.members,
-              spaceName: widget.spaceInfo.space.name
-          ).push(context);
+          AppRoute.chat(spaceInfo: widget.spaceInfo, threadInfoList: state.threadInfo).push(context);
         },
         icon: Icon(
           Icons.add_rounded,
@@ -86,16 +87,18 @@ class _ThreadListScreenState extends ConsumerState<ThreadListScreen> {
   }
 
   Widget _threadList(BuildContext context, List<ThreadInfo> threads) {
+    List<ThreadInfo> mutableThreads = List.from(threads);
+
     return ListView.builder(
-      itemCount: threads.length,
+      itemCount: mutableThreads.length,
       itemBuilder: (context, index) {
-        final thread = threads[index];
+        final thread = mutableThreads[index];
         final members = thread.members.where((member) => member.user.id != notifier.currentUser?.id).toList();
         final displayedMembers = members.take(2).toList();
-        final isLastItem = index == threads.length - 1;
-        final date = thread.threadMessage.isNotEmpty ? thread.threadMessage.last.created_at : null;
+        final isLastItem = index == mutableThreads.length - 1;
+        final date = thread.threadMessage.isNotEmpty ? thread.threadMessage.first.created_at : null;
         final hasUnreadMessage = thread.threadMessage
-            .any((message) => message.seen_by.contains(notifier.currentUser?.id));
+            .any((message) => !message.seen_by.contains(notifier.currentUser?.id));
 
         return Slidable(
           endActionPane: ActionPane(
@@ -104,8 +107,10 @@ class _ThreadListScreenState extends ConsumerState<ThreadListScreen> {
               SlidableAction(
                 onPressed: (context) {
                   _showDeleteConfirmation(() {
-                    notifier.deleteThread(thread.thread);
-                    threads.removeAt(index);
+                    setState(() {
+                      notifier.deleteThread(thread.thread);
+                      mutableThreads.removeAt(index);
+                    });
                   });
                 },
                 backgroundColor: context.colorScheme.alert,
@@ -115,22 +120,28 @@ class _ThreadListScreenState extends ConsumerState<ThreadListScreen> {
               ),
             ],
           ),
-          child: Column(
-            children: [
-              _threadItem(
-                context: context,
-                members: members,
-                displayedMembers: displayedMembers,
-                message: thread.threadMessage.isNotEmpty
-                    ? thread.threadMessage.last.message ?? ''
-                    : '',
-                date: date ?? DateTime.now(),
-                hasUnreadMessage: hasUnreadMessage,
-              ),
-              if (!isLastItem) ...[
-                _divider(context),
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              AppRoute.chat(spaceInfo: widget.spaceInfo, thread: thread).push(context);
+            },
+            child: Column(
+              children: [
+                _threadItem(
+                  context: context,
+                  members: members,
+                  displayedMembers: displayedMembers,
+                  message: thread.threadMessage.isNotEmpty
+                      ? thread.threadMessage.first.message
+                      : '',
+                  date: date ?? DateTime.now(),
+                  hasUnreadMessage: hasUnreadMessage,
+                ),
+                if (!isLastItem) ...[
+                  _divider(context),
+                ],
               ],
-            ],
+            ),
           ),
         );
       },
@@ -163,7 +174,7 @@ class _ThreadListScreenState extends ConsumerState<ThreadListScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              if (!hasUnreadMessage) ...[
+              if (hasUnreadMessage) ...[
                 Container(
                   height: 8,
                   width: 8,
@@ -228,6 +239,8 @@ class _ThreadListScreenState extends ConsumerState<ThreadListScreen> {
           style: AppTextStyle.caption.copyWith(
             color: context.colorScheme.textDisabled,
           ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         )
       ],
     );
@@ -250,7 +263,7 @@ class _ThreadListScreenState extends ConsumerState<ThreadListScreen> {
                     members[i],
                     size: 40,
                     isMoreMember: members.length > 2 && i == 1,
-                    count: members.length - 2),
+                    count: members.length - 1),
               ),
           ],
         ),
@@ -357,7 +370,7 @@ class _ThreadListScreenState extends ConsumerState<ThreadListScreen> {
   }
 
   void _observeInviteScreenNavigation() {
-    ref.listen(threadListViewStateProvider.select((state) => state.spaceInvitationCode), (previous, next) {
+    ref.listen(threadListViewStateProvider(widget.spaceInfo.space.id).select((state) => state.spaceInvitationCode), (previous, next) {
       if (next.isNotEmpty) {
         AppRoute.inviteCode(code: next, spaceName: widget.spaceInfo.space.name).push(context);
       }
@@ -365,7 +378,7 @@ class _ThreadListScreenState extends ConsumerState<ThreadListScreen> {
   }
 
   void _observeError() {
-    ref.listen(threadListViewStateProvider.select((state) => state.error), (previous, next) {
+    ref.listen(threadListViewStateProvider(widget.spaceInfo.space.id).select((state) => state.error), (previous, next) {
       if (next != null) {
         showErrorSnackBar(context, next.toString());
       }

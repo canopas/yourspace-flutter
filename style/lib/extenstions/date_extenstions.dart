@@ -173,3 +173,11 @@ extension DateTimeRangeExtensions on DateTimeRange {
     );
   }
 }
+
+DateTime extractDate(DateTime dateTime) {
+  return DateTime(dateTime.year, dateTime.month, dateTime.day);
+}
+
+DateTime extractTime(DateTime dateTime) {
+  return DateTime(1, 1, 1, dateTime.hour, dateTime.minute, 0);
+}

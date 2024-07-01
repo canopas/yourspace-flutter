@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:data/api/auth/auth_models.dart';
+import 'package:data/api/message/message_models.dart';
 import 'package:data/api/space/space_models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
@@ -166,10 +166,10 @@ class AppRoute {
       builder: (_) => ThreadListScreen(spaceInfo: space),
     );
   }
-  static AppRoute chat({required List<ApiUserInfo> users, required String spaceName}) {
+  static AppRoute chat({required SpaceInfo spaceInfo, ThreadInfo? thread, List<ThreadInfo>? threadInfoList}) {
     return AppRoute(
       pathMessage,
-      builder: (_) => ChatScreen(users: users, spaceName: spaceName),
+      builder: (_) => ChatScreen(spaceInfo: spaceInfo, threadInfo: thread, threadInfoList: threadInfoList),
     );
   }
 

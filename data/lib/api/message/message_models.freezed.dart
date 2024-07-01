@@ -292,9 +292,10 @@ mixin _$ApiThreadMessage {
   String get id => throw _privateConstructorUsedError;
   String get thread_id => throw _privateConstructorUsedError;
   String get sender_id => throw _privateConstructorUsedError;
-  String? get message => throw _privateConstructorUsedError;
+  String get message => throw _privateConstructorUsedError;
   List<String> get seen_by => throw _privateConstructorUsedError;
   Map<String, double>? get archived_for => throw _privateConstructorUsedError;
+  @ServerTimestampConverter()
   DateTime? get created_at => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -313,10 +314,10 @@ abstract class $ApiThreadMessageCopyWith<$Res> {
       {String id,
       String thread_id,
       String sender_id,
-      String? message,
+      String message,
       List<String> seen_by,
       Map<String, double>? archived_for,
-      DateTime? created_at});
+      @ServerTimestampConverter() DateTime? created_at});
 }
 
 /// @nodoc
@@ -335,7 +336,7 @@ class _$ApiThreadMessageCopyWithImpl<$Res, $Val extends ApiThreadMessage>
     Object? id = null,
     Object? thread_id = null,
     Object? sender_id = null,
-    Object? message = freezed,
+    Object? message = null,
     Object? seen_by = null,
     Object? archived_for = freezed,
     Object? created_at = freezed,
@@ -353,10 +354,10 @@ class _$ApiThreadMessageCopyWithImpl<$Res, $Val extends ApiThreadMessage>
           ? _value.sender_id
           : sender_id // ignore: cast_nullable_to_non_nullable
               as String,
-      message: freezed == message
+      message: null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       seen_by: null == seen_by
           ? _value.seen_by
           : seen_by // ignore: cast_nullable_to_non_nullable
@@ -385,10 +386,10 @@ abstract class _$$ApiThreadMessageImplCopyWith<$Res>
       {String id,
       String thread_id,
       String sender_id,
-      String? message,
+      String message,
       List<String> seen_by,
       Map<String, double>? archived_for,
-      DateTime? created_at});
+      @ServerTimestampConverter() DateTime? created_at});
 }
 
 /// @nodoc
@@ -405,7 +406,7 @@ class __$$ApiThreadMessageImplCopyWithImpl<$Res>
     Object? id = null,
     Object? thread_id = null,
     Object? sender_id = null,
-    Object? message = freezed,
+    Object? message = null,
     Object? seen_by = null,
     Object? archived_for = freezed,
     Object? created_at = freezed,
@@ -423,10 +424,10 @@ class __$$ApiThreadMessageImplCopyWithImpl<$Res>
           ? _value.sender_id
           : sender_id // ignore: cast_nullable_to_non_nullable
               as String,
-      message: freezed == message
+      message: null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       seen_by: null == seen_by
           ? _value._seen_by
           : seen_by // ignore: cast_nullable_to_non_nullable
@@ -450,10 +451,10 @@ class _$ApiThreadMessageImpl extends _ApiThreadMessage {
       {required this.id,
       required this.thread_id,
       required this.sender_id,
-      this.message,
+      required this.message,
       required final List<String> seen_by,
       final Map<String, double>? archived_for,
-      this.created_at})
+      @ServerTimestampConverter() this.created_at})
       : _seen_by = seen_by,
         _archived_for = archived_for,
         super._();
@@ -468,7 +469,7 @@ class _$ApiThreadMessageImpl extends _ApiThreadMessage {
   @override
   final String sender_id;
   @override
-  final String? message;
+  final String message;
   final List<String> _seen_by;
   @override
   List<String> get seen_by {
@@ -488,6 +489,7 @@ class _$ApiThreadMessageImpl extends _ApiThreadMessage {
   }
 
   @override
+  @ServerTimestampConverter()
   final DateTime? created_at;
 
   @override
@@ -542,13 +544,14 @@ class _$ApiThreadMessageImpl extends _ApiThreadMessage {
 
 abstract class _ApiThreadMessage extends ApiThreadMessage {
   const factory _ApiThreadMessage(
-      {required final String id,
-      required final String thread_id,
-      required final String sender_id,
-      final String? message,
-      required final List<String> seen_by,
-      final Map<String, double>? archived_for,
-      final DateTime? created_at}) = _$ApiThreadMessageImpl;
+          {required final String id,
+          required final String thread_id,
+          required final String sender_id,
+          required final String message,
+          required final List<String> seen_by,
+          final Map<String, double>? archived_for,
+          @ServerTimestampConverter() final DateTime? created_at}) =
+      _$ApiThreadMessageImpl;
   const _ApiThreadMessage._() : super._();
 
   factory _ApiThreadMessage.fromJson(Map<String, dynamic> json) =
@@ -561,12 +564,13 @@ abstract class _ApiThreadMessage extends ApiThreadMessage {
   @override
   String get sender_id;
   @override
-  String? get message;
+  String get message;
   @override
   List<String> get seen_by;
   @override
   Map<String, double>? get archived_for;
   @override
+  @ServerTimestampConverter()
   DateTime? get created_at;
   @override
   @JsonKey(ignore: true)
@@ -581,9 +585,9 @@ ThreadInfo _$ThreadInfoFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ThreadInfo {
   ApiThread get thread => throw _privateConstructorUsedError;
-  List<ApiUserInfo> get members => throw _privateConstructorUsedError;
   List<ApiThreadMessage> get threadMessage =>
       throw _privateConstructorUsedError;
+  List<ApiUserInfo> get members => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -599,8 +603,8 @@ abstract class $ThreadInfoCopyWith<$Res> {
   @useResult
   $Res call(
       {ApiThread thread,
-      List<ApiUserInfo> members,
-      List<ApiThreadMessage> threadMessage});
+      List<ApiThreadMessage> threadMessage,
+      List<ApiUserInfo> members});
 
   $ApiThreadCopyWith<$Res> get thread;
 }
@@ -619,22 +623,22 @@ class _$ThreadInfoCopyWithImpl<$Res, $Val extends ThreadInfo>
   @override
   $Res call({
     Object? thread = null,
-    Object? members = null,
     Object? threadMessage = null,
+    Object? members = null,
   }) {
     return _then(_value.copyWith(
       thread: null == thread
           ? _value.thread
           : thread // ignore: cast_nullable_to_non_nullable
               as ApiThread,
-      members: null == members
-          ? _value.members
-          : members // ignore: cast_nullable_to_non_nullable
-              as List<ApiUserInfo>,
       threadMessage: null == threadMessage
           ? _value.threadMessage
           : threadMessage // ignore: cast_nullable_to_non_nullable
               as List<ApiThreadMessage>,
+      members: null == members
+          ? _value.members
+          : members // ignore: cast_nullable_to_non_nullable
+              as List<ApiUserInfo>,
     ) as $Val);
   }
 
@@ -657,8 +661,8 @@ abstract class _$$ThreadInfoImplCopyWith<$Res>
   @useResult
   $Res call(
       {ApiThread thread,
-      List<ApiUserInfo> members,
-      List<ApiThreadMessage> threadMessage});
+      List<ApiThreadMessage> threadMessage,
+      List<ApiUserInfo> members});
 
   @override
   $ApiThreadCopyWith<$Res> get thread;
@@ -676,22 +680,22 @@ class __$$ThreadInfoImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? thread = null,
-    Object? members = null,
     Object? threadMessage = null,
+    Object? members = null,
   }) {
     return _then(_$ThreadInfoImpl(
       thread: null == thread
           ? _value.thread
           : thread // ignore: cast_nullable_to_non_nullable
               as ApiThread,
-      members: null == members
-          ? _value._members
-          : members // ignore: cast_nullable_to_non_nullable
-              as List<ApiUserInfo>,
       threadMessage: null == threadMessage
           ? _value._threadMessage
           : threadMessage // ignore: cast_nullable_to_non_nullable
               as List<ApiThreadMessage>,
+      members: null == members
+          ? _value._members
+          : members // ignore: cast_nullable_to_non_nullable
+              as List<ApiUserInfo>,
     ));
   }
 }
@@ -701,10 +705,10 @@ class __$$ThreadInfoImplCopyWithImpl<$Res>
 class _$ThreadInfoImpl extends _ThreadInfo {
   const _$ThreadInfoImpl(
       {required this.thread,
-      required final List<ApiUserInfo> members,
-      required final List<ApiThreadMessage> threadMessage})
-      : _members = members,
-        _threadMessage = threadMessage,
+      required final List<ApiThreadMessage> threadMessage,
+      required final List<ApiUserInfo> members})
+      : _threadMessage = threadMessage,
+        _members = members,
         super._();
 
   factory _$ThreadInfoImpl.fromJson(Map<String, dynamic> json) =>
@@ -712,14 +716,6 @@ class _$ThreadInfoImpl extends _ThreadInfo {
 
   @override
   final ApiThread thread;
-  final List<ApiUserInfo> _members;
-  @override
-  List<ApiUserInfo> get members {
-    if (_members is EqualUnmodifiableListView) return _members;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_members);
-  }
-
   final List<ApiThreadMessage> _threadMessage;
   @override
   List<ApiThreadMessage> get threadMessage {
@@ -728,9 +724,17 @@ class _$ThreadInfoImpl extends _ThreadInfo {
     return EqualUnmodifiableListView(_threadMessage);
   }
 
+  final List<ApiUserInfo> _members;
+  @override
+  List<ApiUserInfo> get members {
+    if (_members is EqualUnmodifiableListView) return _members;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_members);
+  }
+
   @override
   String toString() {
-    return 'ThreadInfo(thread: $thread, members: $members, threadMessage: $threadMessage)';
+    return 'ThreadInfo(thread: $thread, threadMessage: $threadMessage, members: $members)';
   }
 
   @override
@@ -739,9 +743,9 @@ class _$ThreadInfoImpl extends _ThreadInfo {
         (other.runtimeType == runtimeType &&
             other is _$ThreadInfoImpl &&
             (identical(other.thread, thread) || other.thread == thread) &&
-            const DeepCollectionEquality().equals(other._members, _members) &&
             const DeepCollectionEquality()
-                .equals(other._threadMessage, _threadMessage));
+                .equals(other._threadMessage, _threadMessage) &&
+            const DeepCollectionEquality().equals(other._members, _members));
   }
 
   @JsonKey(ignore: true)
@@ -749,8 +753,8 @@ class _$ThreadInfoImpl extends _ThreadInfo {
   int get hashCode => Object.hash(
       runtimeType,
       thread,
-      const DeepCollectionEquality().hash(_members),
-      const DeepCollectionEquality().hash(_threadMessage));
+      const DeepCollectionEquality().hash(_threadMessage),
+      const DeepCollectionEquality().hash(_members));
 
   @JsonKey(ignore: true)
   @override
@@ -769,8 +773,8 @@ class _$ThreadInfoImpl extends _ThreadInfo {
 abstract class _ThreadInfo extends ThreadInfo {
   const factory _ThreadInfo(
       {required final ApiThread thread,
-      required final List<ApiUserInfo> members,
-      required final List<ApiThreadMessage> threadMessage}) = _$ThreadInfoImpl;
+      required final List<ApiThreadMessage> threadMessage,
+      required final List<ApiUserInfo> members}) = _$ThreadInfoImpl;
   const _ThreadInfo._() : super._();
 
   factory _ThreadInfo.fromJson(Map<String, dynamic> json) =
@@ -779,9 +783,9 @@ abstract class _ThreadInfo extends ThreadInfo {
   @override
   ApiThread get thread;
   @override
-  List<ApiUserInfo> get members;
-  @override
   List<ApiThreadMessage> get threadMessage;
+  @override
+  List<ApiUserInfo> get members;
   @override
   @JsonKey(ignore: true)
   _$$ThreadInfoImplCopyWith<_$ThreadInfoImpl> get copyWith =>

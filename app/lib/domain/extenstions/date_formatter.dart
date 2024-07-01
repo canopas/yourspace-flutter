@@ -141,8 +141,7 @@ extension DateFormatter on DateTime {
         }
       }
     } else if (isYesterday) {
-      final String time = DateFormat('jm').format(this);
-      return '${context.l10n.common_yesterday} $time';
+      return context.l10n.common_yesterday;
     } else {
       final bool isSameYear = year == currentTime.year;
 

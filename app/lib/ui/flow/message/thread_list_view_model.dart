@@ -1,4 +1,5 @@
 import 'package:data/api/auth/auth_models.dart';
+import 'package:data/api/message/api_message_service.dart';
 import 'package:data/api/message/message_models.dart';
 import 'package:data/api/space/space_models.dart';
 import 'package:data/log/logger.dart';
@@ -6,25 +7,26 @@ import 'package:data/storage/app_preferences.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:data/service/space_service.dart';
-import 'package:data/service/message_service.dart';
 
 part 'thread_list_view_model.freezed.dart';
 
-final threadListViewStateProvider = StateNotifierProvider.autoDispose<
-    ThreadListViewNotifier, ThreadListViewState>(
-      (ref) => ThreadListViewNotifier(
-        ref.read(spaceServiceProvider),
-        ref.read(messageServiceProvider),
-        ref.read(currentUserPod),
-  ),
-);
+final threadListViewStateProvider = StateNotifierProvider.family<
+    ThreadListViewNotifier, ThreadListViewState, String>((ref, spaceId) {
+  return ThreadListViewNotifier(
+    spaceId,
+    ref.read(spaceServiceProvider),
+    ref.read(apiMessageServiceProvider),
+    ref.read(currentUserPod),
+  );
+});
 
 class ThreadListViewNotifier extends StateNotifier<ThreadListViewState> {
+  final String spaceId;
   final SpaceService spaceService;
-  final MessageService messageService;
+  final ApiMessageService messageService;
   final ApiUser? currentUser;
 
-  ThreadListViewNotifier(this.spaceService, this.messageService, this.currentUser) : super(const ThreadListViewState());
+  ThreadListViewNotifier(this.spaceId, this.spaceService, this.messageService, this.currentUser) : super(const ThreadListViewState());
 
   void setSpace(SpaceInfo space) {
     state = state.copyWith(space: space);
@@ -89,6 +91,7 @@ class ThreadListViewState with _$ThreadListViewState {
     @Default('') String message,
     @Default([]) List<SpaceInfo> spaceList,
     @Default([]) List<ThreadInfo> threadInfo,
+    @Default([]) List<ApiThreadMessage> threadMessages,
     Object? error,
   }) = _ThreadListViewState;
 }

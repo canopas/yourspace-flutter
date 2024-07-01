@@ -36,15 +36,14 @@ _$ApiThreadMessageImpl _$$ApiThreadMessageImplFromJson(
       id: json['id'] as String,
       thread_id: json['thread_id'] as String,
       sender_id: json['sender_id'] as String,
-      message: json['message'] as String?,
+      message: json['message'] as String,
       seen_by:
           (json['seen_by'] as List<dynamic>).map((e) => e as String).toList(),
       archived_for: (json['archived_for'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, (e as num).toDouble()),
       ),
-      created_at: json['created_at'] == null
-          ? null
-          : DateTime.parse(json['created_at'] as String),
+      created_at: const ServerTimestampConverter()
+          .fromJson(json['created_at'] as Timestamp?),
     );
 
 Map<String, dynamic> _$$ApiThreadMessageImplToJson(
@@ -56,23 +55,24 @@ Map<String, dynamic> _$$ApiThreadMessageImplToJson(
       'message': instance.message,
       'seen_by': instance.seen_by,
       'archived_for': instance.archived_for,
-      'created_at': instance.created_at?.toIso8601String(),
+      'created_at':
+          const ServerTimestampConverter().toJson(instance.created_at),
     };
 
 _$ThreadInfoImpl _$$ThreadInfoImplFromJson(Map<String, dynamic> json) =>
     _$ThreadInfoImpl(
       thread: ApiThread.fromJson(json['thread'] as Map<String, dynamic>),
-      members: (json['members'] as List<dynamic>)
-          .map((e) => ApiUserInfo.fromJson(e as Map<String, dynamic>))
-          .toList(),
       threadMessage: (json['threadMessage'] as List<dynamic>)
           .map((e) => ApiThreadMessage.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      members: (json['members'] as List<dynamic>)
+          .map((e) => ApiUserInfo.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$$ThreadInfoImplToJson(_$ThreadInfoImpl instance) =>
     <String, dynamic>{
       'thread': instance.thread,
-      'members': instance.members,
       'threadMessage': instance.threadMessage,
+      'members': instance.members,
     };
