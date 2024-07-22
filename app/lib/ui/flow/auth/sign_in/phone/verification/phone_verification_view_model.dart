@@ -72,7 +72,7 @@ class PhoneVerificationViewNotifier
               await firebaseAuth.signInWithCredential(authCredential);
           final firebaseIdToken = await userCredential.user?.getIdToken() ?? '';
           final isNewUser = await authService.verifiedLogin(
-            uid: userCredential.user?.uid,
+            uid: userCredential.user?.uid ?? '',
             firebaseToken: firebaseIdToken,
             phone: phone,
             authType: LOGIN_TYPE_PHONE,
@@ -105,7 +105,7 @@ class PhoneVerificationViewNotifier
           await firebaseAuth.signInWithCredential(credential);
       final firebaseIdToken = await userCredential.user?.getIdToken() ?? '';
       final isNewUser = await authService.verifiedLogin(
-        uid: userCredential.user?.uid,
+        uid: userCredential.user?.uid ?? '',
         firebaseToken: firebaseIdToken,
         phone: phoneNumer,
         authType: LOGIN_TYPE_PHONE,

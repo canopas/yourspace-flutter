@@ -14,16 +14,18 @@ final googleSignInProvider = Provider<GoogleSignIn>((ref) {
 
 final signInMethodsStateProvider = StateNotifierProvider.autoDispose<
     SignInMethodsScreenViewNotifier, SignInMethodsScreenState>((ref) {
-  return SignInMethodsScreenViewNotifier(
-      ref.read(googleSignInProvider), ref.read(authServiceProvider));
+  return SignInMethodsScreenViewNotifier(ref.read(googleSignInProvider),
+      ref.read(authServiceProvider), FirebaseAuth.instance);
 });
 
 class SignInMethodsScreenViewNotifier
     extends StateNotifier<SignInMethodsScreenState> {
   final GoogleSignIn googleSignIn;
   final AuthService authService;
+  final FirebaseAuth firebaseAuth;
 
-  SignInMethodsScreenViewNotifier(this.googleSignIn, this.authService)
+  SignInMethodsScreenViewNotifier(
+      this.googleSignIn, this.authService, this.firebaseAuth)
       : super(const SignInMethodsScreenState());
 
   Future<void> signInWithGoogle() async {
@@ -34,7 +36,7 @@ class SignInMethodsScreenViewNotifier
         final String userIdToken =
             await userCredential.user?.getIdToken() ?? '';
         final isNewUser = await authService.verifiedLogin(
-            uid: userCredential.user?.uid,
+            uid: userCredential.user?.uid ?? '',
             firebaseToken: userIdToken,
             email: account!.email,
             firstName:
@@ -62,7 +64,7 @@ class SignInMethodsScreenViewNotifier
   }
 
   Future<(UserCredential?, GoogleSignInAccount?)>
-  _getUserCredentialFromGoogle() async {
+      _getUserCredentialFromGoogle() async {
     final signInAccount = await googleSignIn.signIn();
     if (signInAccount != null) {
       final signInAuthentication = await signInAccount.authentication;
@@ -77,6 +79,37 @@ class SignInMethodsScreenViewNotifier
       return (auth, signInAccount);
     }
     return (null, null);
+  }
+
+  Future<void> signInWithApple() async {
+    try {
+      state = state.copyWith(showAppleLoading: true, error: null);
+
+      final appleProvider = AppleAuthProvider();
+      appleProvider.addScope('email');
+      final credential = await FirebaseAuth.instance.signInWithProvider(appleProvider);
+      final email = FirebaseAuth.instance.currentUser?.email;
+      final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+      final isNewUser = await authService.verifiedLogin(
+        uid: uid,
+        firebaseToken: await credential.user?.getIdToken(),
+        email: email,
+        firstName: credential.user?.displayName,
+        authType: 3,
+      );
+      state = state.copyWith(
+          showAppleLoading: false,
+          socialSignInCompleted: true,
+          isNewUser: isNewUser);
+    } catch (error, stack) {
+      state = state.copyWith(showAppleLoading: false, socialSignInCompleted: false);
+      logger.e(
+        'SignInMethodScreenViewNotifier: error while sign in with apple',
+        error: error,
+        stackTrace: stack,
+      );
+    }
   }
 }
 

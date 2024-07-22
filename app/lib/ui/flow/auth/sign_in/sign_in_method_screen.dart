@@ -1,4 +1,5 @@
 import 'package:data/storage/app_preferences.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -58,6 +59,7 @@ class _SignInMethodScreenState extends ConsumerState<SignInMethodScreen> {
                 const SizedBox(height: 80),
                 const AppLogo(),
                 const Spacer(),
+                _appleSignInButton(),
                 _googleSignInButton(),
                 _phoneSignInButton(),
                 const Spacer(),
@@ -81,6 +83,27 @@ class _SignInMethodScreenState extends ConsumerState<SignInMethodScreen> {
         isLoading: ref.watch(signInMethodsStateProvider
             .select((value) => value.showGoogleLoading)),
       ));
+
+  Widget _appleSignInButton() => Visibility(
+    visible: defaultTargetPlatform == TargetPlatform.iOS,
+    child: Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: SignInMethodButton(
+        onTap: () async {
+          await notifier.signInWithApple();
+        },
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+        title: context.l10n.sign_in_options_continue_with_apple_btn_title,
+        icon: const Icon(
+          Icons.apple_rounded,
+          color: Colors.white,
+          size: 22,
+        ),
+        isLoading: ref.watch(signInMethodsStateProvider.select((state) => state.showAppleLoading)),
+      ),
+    ),
+  );
 
   Widget _phoneSignInButton() => Padding(
       padding: const EdgeInsets.only(bottom: 16),
@@ -109,14 +132,18 @@ class _SignInMethodScreenState extends ConsumerState<SignInMethodScreen> {
     if (mounted) AppRoute.home.go(context);
   }
 
-  _listenSignInSuccess() {
+  void _listenSignInSuccess() {
     ref.listen(
-        signInMethodsStateProvider
-            .select((value) => value.socialSignInCompleted), (previous, next) {
-      if (next) {
-        onSignInSuccess();
-      }
-    });
+      signInMethodsStateProvider.select((value) => value.socialSignInCompleted),
+          (previous, next) {
+        if (next) {
+          debugPrint('Sign-in successful');
+          onSignInSuccess();
+        } else {
+          debugPrint('Sign-in not completed yet');
+        }
+      },
+    );
   }
 
   void _observeError() {

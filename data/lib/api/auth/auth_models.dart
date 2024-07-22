@@ -12,6 +12,7 @@ part 'auth_models.g.dart';
 
 const LOGIN_TYPE_GOOGLE = 1;
 const LOGIN_TYPE_PHONE = 2;
+const LOGIN_TYPE_APPLE = 3;
 
 @freezed
 class ApiUser with _$ApiUser {

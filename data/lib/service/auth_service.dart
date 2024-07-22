@@ -22,7 +22,7 @@ class AuthService {
   ApiUser? get currentUser => _currentUser;
 
   Future<bool> verifiedLogin(
-      {String? uid,
+      {required String uid,
       String? firebaseToken,
       String? phone,
       String? email,

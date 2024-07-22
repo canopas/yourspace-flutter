@@ -50,7 +50,7 @@ class ApiUserService {
           toFirestore: (session, _) => session.toJson());
 
   Future<Map<String, dynamic>> saveUser({
-    String? uid,
+    required String uid,
     String? firebaseToken,
     String? phone,
     String? email,
@@ -62,7 +62,7 @@ class ApiUserService {
     final bool isExists = await getUser(uid) != null;
 
     if (isExists) {
-      final sessionDocRef = _sessionRef(uid!).doc();
+      final sessionDocRef = _sessionRef(uid).doc();
       final ApiSession session = ApiSession(
         id: sessionDocRef.id,
         user_id: uid,
@@ -78,7 +78,7 @@ class ApiUserService {
       return {'isNewUser': false, 'user': user, 'session': session};
     } else {
       final ApiUser user = ApiUser(
-        id: uid!,
+        id: uid,
         email: email ?? '',
         phone: phone ?? '',
         auth_type: authType,

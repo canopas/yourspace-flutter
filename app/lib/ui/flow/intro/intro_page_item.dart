@@ -47,26 +47,28 @@ class IntroPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SizedBox(height: 40),
-          Text(
-            item.title,
-            style: AppTextStyle.header1
-                .copyWith(color: context.colorScheme.textPrimary),
-          ),
-          const SizedBox(height: 24),
-          SvgPicture.asset(item.image),
-          const SizedBox(height: 16),
-          Text(
-            item.subtitle,
-            textAlign: TextAlign.center,
-            style: AppTextStyle.subtitle1
-                .copyWith(color: context.colorScheme.textSecondary),
-          ),
-        ],
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 24),
+            Text(
+              item.title,
+              style: AppTextStyle.header1
+                  .copyWith(color: context.colorScheme.textPrimary),
+            ),
+            const SizedBox(height: 24),
+            SvgPicture.asset(item.image, width: MediaQuery.of(context).size.width - 32, height: MediaQuery.of(context).size.width - 32),
+            const SizedBox(height: 16),
+            Text(
+              item.subtitle,
+              textAlign: TextAlign.center,
+              style: AppTextStyle.subtitle1
+                  .copyWith(color: context.colorScheme.textSecondary),
+            ),
+          ],
+        ),
       ),
     );
   }

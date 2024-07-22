@@ -51,7 +51,7 @@ class SignInWithPhoneViewNotifier extends StateNotifier<SignInWithPhoneState> {
               await firebaseAuth.signInWithCredential(authCredential);
           final firebaseIdToken = await userCredential.user?.getIdToken() ?? '';
           final isNewUser = await authService.verifiedLogin(
-            uid: userCredential.user?.uid,
+            uid: userCredential.user?.uid ?? '',
             firebaseToken: firebaseIdToken,
             phone: state.code.dialCode + state.phone,
             authType: LOGIN_TYPE_PHONE,

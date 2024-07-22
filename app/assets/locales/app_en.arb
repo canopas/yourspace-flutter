@@ -41,6 +41,7 @@
   },
   "sign_in_options_continue_with_google_btn_title": "Continue with Google",
   "sign_in_options_continue_with_phone_btn_title": "Continue with Phone",
+  "sign_in_options_continue_with_apple_btn_title": "Continue with Apple",
   "sign_in_with_phone_enter_phone_number_title": "Enter Phone Number",
   "sign_in_with_phone_verification_description": "We’ll verify your phone number with a verification code.",
   "sign_in_with_phone_phone_number_hint": "Phone Number",
