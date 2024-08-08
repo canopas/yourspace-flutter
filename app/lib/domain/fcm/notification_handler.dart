@@ -50,7 +50,7 @@ class NotificationUpdateStateConst {
 }
 
 final notificationHandlerProvider =
-    StateProvider.autoDispose((ref) => NotificationHandler());
+StateProvider.autoDispose((ref) => NotificationHandler());
 
 class NotificationHandler {
   final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -58,7 +58,7 @@ class NotificationHandler {
   NotificationHandler() {
     _flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+        AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(_androidChannel);
   }
 
@@ -102,6 +102,12 @@ class NotificationHandler {
           _onNotificationTap(context, jsonDecode(response.payload!));
         }
       },
+      onDidReceiveBackgroundNotificationResponse: (response) {
+        if (response.actionId == 'reply') {
+          final replyText = response.input;
+          handleReply(replyText);
+        }
+      },
     );
   }
 
@@ -112,18 +118,45 @@ class NotificationHandler {
     final body = notification?.body;
 
     if (title != null && body != null) {
-        _flutterLocalNotificationsPlugin.show(
-          DateTime.now().microsecondsSinceEpoch ~/ 1000000,
-          title,
-          body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              _androidChannel.id,
-              _androidChannel.name,
-            ),
+      final androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        _androidChannel.id,
+        _androidChannel.name,
+        importance: Importance.max,
+        priority: Priority.high,
+        actions: <AndroidNotificationAction>[
+          const AndroidNotificationAction(
+            'reply',
+            'Reply',
+            showsUserInterface: true,
+            allowGeneratedReplies: true,
+            inputs: <AndroidNotificationActionInput>[
+              AndroidNotificationActionInput(label: 'Type your reply...'),
+            ],
           ),
-          payload: jsonEncode(data),
-        );
+        ],
+      );
+
+      final platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: const DarwinNotificationDetails(
+          categoryIdentifier: 'REPLY_CATEGORY',
+        ),
+      );
+
+      _flutterLocalNotificationsPlugin.show(
+        DateTime.now().microsecondsSinceEpoch ~/ 1000000,
+        title,
+        body,
+        platformChannelSpecifics,
+        payload: jsonEncode(data),
+      );
+    }
+  }
+
+  void handleReply(String? replyText) {
+    if (replyText != null && replyText.isNotEmpty) {
+      logger.d("User replied: $replyText");
+      // Process the reply text, e.g., send it to your server
     }
   }
 }
@@ -137,6 +170,7 @@ extension on NotificationHandler {
 
     switch (type) {
       case NotificationChatConst.NOTIFICATION_TYPE_CHAT:
+        _handleChatMessage(context, data);
         break;
       case NotificationPlaceConst.NOTIFICATION_TYPE_NEW_PLACE_ADDED:
         _handlePlaceAdded(context, data);
@@ -153,6 +187,15 @@ extension on NotificationHandler {
       AppRoute.placesList(spaceId).push(context);
     } else {
       logger.e("Space ID is null for place added notification");
+    }
+  }
+
+  void _handleChatMessage(BuildContext context, Map<String, dynamic> data) {
+    final String? threadId = data[NotificationChatConst.KEY_THREAD_ID];
+    if (threadId != null) {
+      AppRoute.chat(threadId: threadId).push(context);
+    } else {
+      logger.e("Thread ID is null for chat notification");
     }
   }
 }

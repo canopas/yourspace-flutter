@@ -58,7 +58,7 @@ class _ThreadListScreenState extends ConsumerState<ThreadListScreen> {
       floatingActionButton: widget.spaceInfo.members.length >= 2
       ? LargeIconButton(
         onTap: () {
-          AppRoute.chat(spaceInfo: widget.spaceInfo, threadInfoList: state.threadInfo).push(context);
+          AppRoute.chat(spaceId: widget.spaceInfo.space.id, spaceName: widget.spaceInfo.space.name, threadInfoList: state.threadInfo).push(context);
         },
         icon: Icon(
           Icons.add_rounded,
@@ -104,7 +104,7 @@ class _ThreadListScreenState extends ConsumerState<ThreadListScreen> {
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
-              AppRoute.chat(spaceInfo: widget.spaceInfo, thread: thread, threadMessage: threadMessages[index]).push(context);
+              AppRoute.chat(spaceId: widget.spaceInfo.space.id, threadId: thread.thread.id, threadMessage: threadMessages[index]).push(context);
             },
             child: Column(
               children: [

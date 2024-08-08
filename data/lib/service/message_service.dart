@@ -45,7 +45,7 @@ class MessageService {
     return messageService.getThreads(spaceId, currentUser?.id ?? '');
   }
 
-  Future<ThreadInfo?> getThread(String threadId) async {
+  Future<ThreadInfo?> getThreadInfo(String threadId) async {
     final thread = await messageService.getThread(threadId).first;
     final membersFutures = thread.member_ids.map((memberId) => userService.getUser(memberId));
     final messages = await getMessages(threadId, DateTime.now());
