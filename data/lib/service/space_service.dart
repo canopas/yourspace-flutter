@@ -56,72 +56,49 @@ class SpaceService {
     currentSpaceId = spaceId;
   }
 
-  Future<List<SpaceInfo>> getAllSpaceInfo() async {
-    final userId = currentUser?.id ?? '';
-    final spaces = await getUserSpaces(userId);
-    final List<SpaceInfo> spaceInfoList = [];
-
-    if (spaces.isEmpty) {
-      return spaceInfoList;
-    }
-    for (final space in spaces) {
-      if (space == null) continue;
-      final members = await spaceService.getMembersBySpaceId(space.id);
-
-      final memberInfoList = await Future.wait(
-        members.map((member) async {
-          final user = await userService.getUser(member.user_id);
-          return user != null
-              ? ApiUserInfo(
-                  user: user, isLocationEnabled: member.location_enabled)
-              : null;
-        }),
-      );
-
-      final nonNullMembers = memberInfoList.whereType<ApiUserInfo>().toList();
-
-      final spaceInfo = SpaceInfo(
-        space: space,
-        members: nonNullMembers,
-      );
-      spaceInfoList.add(spaceInfo);
-    }
-    return spaceInfoList;
-  }
-
-  Stream<List<SpaceInfo>> streamSpaceMember() async* {
-    await for (final spaces in streamUserSpaces(currentUser?.id ?? '')) {
-      final List<SpaceInfo> spaceInfoList = [];
-
-      if (spaces.isEmpty) yield spaceInfoList;
+  Stream<List<SpaceInfo>> streamAllSpace() {
+    return streamUserSpaces(currentUser?.id ?? '').switchMap((spaces) {
+      if (spaces.isEmpty) {
+        return Stream.value([]);
+      }
 
       final spaceInfoStreams = spaces.map((space) {
         if (space == null) return Stream.value(null);
 
-        return spaceService.getStreamSpaceMemberBySpaceId(space.id).switchMap((members) {
+        return spaceService
+            .getStreamSpaceMemberBySpaceId(space.id)
+            .switchMap((members) {
           final memberInfoStreams = members.map((member) {
             return CombineLatestStream.combine2(
               userService.getUserStream(member.user_id),
               Stream.value(member.location_enabled),
-                  (user, isLocationEnabled) {
-                    return user != null
-                    ? ApiUserInfo(user: user, isLocationEnabled: isLocationEnabled)
+              (user, isLocationEnabled) {
+                return user != null
+                    ? ApiUserInfo(
+                        user: user,
+                        isLocationEnabled: isLocationEnabled,
+                      )
                     : null;
               },
             );
           }).toList();
 
-          return CombineLatestStream.list(memberInfoStreams).map((memberInfoList) {
-            final nonNullMembers = memberInfoList.whereType<ApiUserInfo>().toList();
+          return CombineLatestStream.list(memberInfoStreams)
+              .map((memberInfoList) {
+            final nonNullMembers =
+                memberInfoList.whereType<ApiUserInfo>().toList();
             return SpaceInfo(space: space, members: nonNullMembers);
           });
         });
       }).toList();
 
-      yield* CombineLatestStream.list(spaceInfoStreams).map((spaceInfoList) {
-        return spaceInfoList.where((spaceInfo) => spaceInfo != null).cast<SpaceInfo>().toList();
+      return CombineLatestStream.list(spaceInfoStreams).map((spaceInfoList) {
+        return spaceInfoList
+            .where((spaceInfo) => spaceInfo != null)
+            .cast<SpaceInfo>()
+            .toList();
       });
-    }
+    });
   }
 
   Future<SpaceInfo?> getCurrentSpaceInfo() async {
@@ -181,14 +158,16 @@ class SpaceService {
     return spaces;
   }
 
-  Stream<List<ApiSpace?>> streamUserSpaces(String userId) async* {
-    await for (final member in spaceService.streamSpaceMemberByUserId(userId)) {
+  Stream<List<ApiSpace?>> streamUserSpaces(String userId) {
+    return spaceService
+        .streamSpaceMemberByUserId(userId)
+        .asyncMap((member) async {
       final spaces = await Future.wait(member.map((spaceMember) async {
         final spaceId = spaceMember.space_id;
         return await spaceService.getSpace(spaceId);
       }).toList());
-      yield spaces;
-    }
+      return spaces;
+    });
   }
 
   Future<ApiSpace?> getSpace(String spaceId) async {

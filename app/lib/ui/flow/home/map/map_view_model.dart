@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -69,7 +70,6 @@ class MapViewNotifier extends StateNotifier<MapViewState> {
     if (state.loading) return;
     try {
       state = state.copyWith(loading: true, selectedUser: null);
-
       spaceService.getMemberWithLocation(spaceId).listen((userInfo) {
         state = state.copyWith(userInfo: userInfo, loading: false);
         _userMapPositions(userInfo);

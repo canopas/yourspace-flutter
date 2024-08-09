@@ -46,7 +46,8 @@ class _MapScreenState extends ConsumerState<MapScreen> {
   @override
   void didUpdateWidget(covariant MapScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.space?.space.id != widget.space?.space.id) {
+    if (widget.space == null ||
+        oldWidget.space?.space.id != widget.space?.space.id) {
       setState(() {
         _markers = [];
         _places = [];
@@ -97,12 +98,15 @@ class _MapScreenState extends ConsumerState<MapScreen> {
     return Column(
       children: [
         SpaceUserFooter(
+          selectedSpace: widget.space,
           members: state.userInfo,
           selectedUser: state.selectedUser,
           isEnabled: !state.loading,
           fetchingInviteCode: state.fetchingInviteCode,
           onAddMemberTap: () {
-            notifier.onAddMemberTap(widget.space!.space.id);
+            if (widget.space != null) {
+              notifier.onAddMemberTap(widget.space!.space.id);
+            }
           },
           onMemberTap: (member) {
             notifier.showMemberDetail(member);
@@ -494,7 +498,8 @@ class _MapScreenState extends ConsumerState<MapScreen> {
   }
 
   void _observeError() {
-    ref.listen(mapViewStateProvider.select((state) => state.error), (previous, next) {
+    ref.listen(mapViewStateProvider.select((state) => state.error),
+        (previous, next) {
       if (next != null) {
         showErrorSnackBar(context, next.toString());
       }

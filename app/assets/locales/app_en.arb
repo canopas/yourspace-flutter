@@ -88,7 +88,7 @@
   "join_space_already_joined_error_text": "You are already member of this space",
   "join_space_invalid_code_error_text": "It appears the code is no longer valid or has expired. please review and enter valid code.",
   "join_space_congratulation_title": "Congratulation",
-  "join_space_congratulation_subtitle": "You’re are now member of {spaceName} group for sharing your real-time location.",
+  "join_space_congratulation_subtitle": "You’re now member of {spaceName} group for sharing your real-time location.",
   "@join_space_congratulation_subtitle": {
     "placeholders": {
       "spaceName": {

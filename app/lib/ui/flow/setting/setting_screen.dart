@@ -39,7 +39,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
       body: ResumeDetector(
           onResume: () {
             notifier.getUserSpace();
-          }, child: _body(context, state)),
+          },
+          child: _body(context, state)),
     );
   }
 
@@ -54,8 +55,10 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
         children: [
           _profileView(context, state),
           const SizedBox(height: 24),
-          _yourSpaceList(context, state),
-          const SizedBox(height: 24),
+          if (state.spaces.isNotEmpty) ...[
+            _yourSpaceList(context, state),
+            const SizedBox(height: 24),
+          ],
           _otherOptionList(context),
         ],
       ),
@@ -165,9 +168,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           child: Center(
             child: Text(
               space.name[0].toUpperCase(),
-              style: AppTextStyle.subtitle1.copyWith(
-                color: context.colorScheme.textPrimary
-              ),
+              style: AppTextStyle.subtitle1
+                  .copyWith(color: context.colorScheme.textPrimary),
             ),
           ),
         ),
@@ -175,9 +177,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
         Expanded(
           child: Text(
             space.name,
-            style: AppTextStyle.subtitle3.copyWith(
-              color: context.colorScheme.textPrimary
-            ),
+            style: AppTextStyle.subtitle3
+                .copyWith(color: context.colorScheme.textPrimary),
             overflow: TextOverflow.ellipsis,
           ),
         ),
@@ -224,7 +225,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
             onTap: () {
               showConfirmation(
                 context,
-                confirmBtnText: context.l10n.settings_other_option_sign_out_text,
+                confirmBtnText:
+                    context.l10n.settings_other_option_sign_out_text,
                 title: context.l10n.settings_sign_out_alert_title,
                 message: context.l10n.settings_sign_out_alert_description,
                 onConfirm: () => notifier.signOut(),
@@ -286,7 +288,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
   }
 
   void _observeLogOut() {
-    ref.listen(settingViewStateProvider.select((state) => state.logOut), (previous, next) {
+    ref.listen(settingViewStateProvider.select((state) => state.logOut),
+        (previous, next) {
       if (next) {
         AppRoute.signInMethod.push(context);
       }
@@ -294,7 +297,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
   }
 
   void _observeError() {
-    ref.listen(settingViewStateProvider.select((state) => state.error), (previous, next) {
+    ref.listen(settingViewStateProvider.select((state) => state.error),
+        (previous, next) {
       if (next != null) {
         showErrorSnackBar(context, next.toString());
       }

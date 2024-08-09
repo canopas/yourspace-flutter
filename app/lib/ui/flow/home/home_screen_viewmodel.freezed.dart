@@ -22,6 +22,7 @@ mixin _$HomeViewState {
   bool get fetchingInviteCode => throw _privateConstructorUsedError;
   bool get enablingLocation => throw _privateConstructorUsedError;
   bool get locationEnabled => throw _privateConstructorUsedError;
+  bool get isSessionExpired => throw _privateConstructorUsedError;
   SpaceInfo? get selectedSpace => throw _privateConstructorUsedError;
   String get spaceInvitationCode => throw _privateConstructorUsedError;
   List<SpaceInfo> get spaceList => throw _privateConstructorUsedError;
@@ -46,6 +47,7 @@ abstract class $HomeViewStateCopyWith<$Res> {
       bool fetchingInviteCode,
       bool enablingLocation,
       bool locationEnabled,
+      bool isSessionExpired,
       SpaceInfo? selectedSpace,
       String spaceInvitationCode,
       List<SpaceInfo> spaceList,
@@ -74,6 +76,7 @@ class _$HomeViewStateCopyWithImpl<$Res, $Val extends HomeViewState>
     Object? fetchingInviteCode = null,
     Object? enablingLocation = null,
     Object? locationEnabled = null,
+    Object? isSessionExpired = null,
     Object? selectedSpace = freezed,
     Object? spaceInvitationCode = null,
     Object? spaceList = null,
@@ -104,6 +107,10 @@ class _$HomeViewStateCopyWithImpl<$Res, $Val extends HomeViewState>
       locationEnabled: null == locationEnabled
           ? _value.locationEnabled
           : locationEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isSessionExpired: null == isSessionExpired
+          ? _value.isSessionExpired
+          : isSessionExpired // ignore: cast_nullable_to_non_nullable
               as bool,
       selectedSpace: freezed == selectedSpace
           ? _value.selectedSpace
@@ -153,6 +160,7 @@ abstract class _$$HomeViewStateImplCopyWith<$Res>
       bool fetchingInviteCode,
       bool enablingLocation,
       bool locationEnabled,
+      bool isSessionExpired,
       SpaceInfo? selectedSpace,
       String spaceInvitationCode,
       List<SpaceInfo> spaceList,
@@ -180,6 +188,7 @@ class __$$HomeViewStateImplCopyWithImpl<$Res>
     Object? fetchingInviteCode = null,
     Object? enablingLocation = null,
     Object? locationEnabled = null,
+    Object? isSessionExpired = null,
     Object? selectedSpace = freezed,
     Object? spaceInvitationCode = null,
     Object? spaceList = null,
@@ -210,6 +219,10 @@ class __$$HomeViewStateImplCopyWithImpl<$Res>
       locationEnabled: null == locationEnabled
           ? _value.locationEnabled
           : locationEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isSessionExpired: null == isSessionExpired
+          ? _value.isSessionExpired
+          : isSessionExpired // ignore: cast_nullable_to_non_nullable
               as bool,
       selectedSpace: freezed == selectedSpace
           ? _value.selectedSpace
@@ -242,6 +255,7 @@ class _$HomeViewStateImpl implements _HomeViewState {
       this.fetchingInviteCode = false,
       this.enablingLocation = false,
       this.locationEnabled = true,
+      this.isSessionExpired = true,
       this.selectedSpace,
       this.spaceInvitationCode = '',
       final List<SpaceInfo> spaceList = const [],
@@ -268,6 +282,9 @@ class _$HomeViewStateImpl implements _HomeViewState {
   @JsonKey()
   final bool locationEnabled;
   @override
+  @JsonKey()
+  final bool isSessionExpired;
+  @override
   final SpaceInfo? selectedSpace;
   @override
   @JsonKey()
@@ -288,7 +305,7 @@ class _$HomeViewStateImpl implements _HomeViewState {
 
   @override
   String toString() {
-    return 'HomeViewState(allowSave: $allowSave, isCreating: $isCreating, loading: $loading, fetchingInviteCode: $fetchingInviteCode, enablingLocation: $enablingLocation, locationEnabled: $locationEnabled, selectedSpace: $selectedSpace, spaceInvitationCode: $spaceInvitationCode, spaceList: $spaceList, error: $error, showBatteryDialog: $showBatteryDialog)';
+    return 'HomeViewState(allowSave: $allowSave, isCreating: $isCreating, loading: $loading, fetchingInviteCode: $fetchingInviteCode, enablingLocation: $enablingLocation, locationEnabled: $locationEnabled, isSessionExpired: $isSessionExpired, selectedSpace: $selectedSpace, spaceInvitationCode: $spaceInvitationCode, spaceList: $spaceList, error: $error, showBatteryDialog: $showBatteryDialog)';
   }
 
   @override
@@ -307,6 +324,8 @@ class _$HomeViewStateImpl implements _HomeViewState {
                 other.enablingLocation == enablingLocation) &&
             (identical(other.locationEnabled, locationEnabled) ||
                 other.locationEnabled == locationEnabled) &&
+            (identical(other.isSessionExpired, isSessionExpired) ||
+                other.isSessionExpired == isSessionExpired) &&
             (identical(other.selectedSpace, selectedSpace) ||
                 other.selectedSpace == selectedSpace) &&
             (identical(other.spaceInvitationCode, spaceInvitationCode) ||
@@ -327,6 +346,7 @@ class _$HomeViewStateImpl implements _HomeViewState {
       fetchingInviteCode,
       enablingLocation,
       locationEnabled,
+      isSessionExpired,
       selectedSpace,
       spaceInvitationCode,
       const DeepCollectionEquality().hash(_spaceList),
@@ -348,6 +368,7 @@ abstract class _HomeViewState implements HomeViewState {
       final bool fetchingInviteCode,
       final bool enablingLocation,
       final bool locationEnabled,
+      final bool isSessionExpired,
       final SpaceInfo? selectedSpace,
       final String spaceInvitationCode,
       final List<SpaceInfo> spaceList,
@@ -366,6 +387,8 @@ abstract class _HomeViewState implements HomeViewState {
   bool get enablingLocation;
   @override
   bool get locationEnabled;
+  @override
+  bool get isSessionExpired;
   @override
   SpaceInfo? get selectedSpace;
   @override

@@ -17,6 +17,7 @@ import '../../../components/app_page.dart';
 
 class JoinSpace extends ConsumerStatefulWidget {
   final bool fromOnboard;
+
   const JoinSpace({super.key, this.fromOnboard = false});
 
   @override
@@ -32,15 +33,15 @@ class _JoinSpaceState extends ConsumerState<JoinSpace> {
   @override
   void initState() {
     _controllers = List.generate(6, (index) => TextEditingController());
-    _focusNodes = List.generate(6, (index) => FocusNode(
-        onKeyEvent: (node, event) {
-          if(event.logicalKey == LogicalKeyboardKey.backspace
-              && _controllers[index].text.isEmpty) {
-            if (index > 0) _focusNodes[index - 1].requestFocus();
-          }
-          return KeyEventResult.ignored;
-        }
-    ));
+    _focusNodes = List.generate(
+        6,
+        (index) => FocusNode(onKeyEvent: (node, event) {
+              if (event.logicalKey == LogicalKeyboardKey.backspace &&
+                  _controllers[index].text.isEmpty) {
+                if (index > 0) _focusNodes[index - 1].requestFocus();
+              }
+              return KeyEventResult.ignored;
+            }));
     super.initState();
   }
 
@@ -63,7 +64,9 @@ class _JoinSpaceState extends ConsumerState<JoinSpace> {
         padding: const EdgeInsets.all(16),
         children: [
           Text(
-            widget.fromOnboard ? context.l10n.join_space_invitation_title : context.l10n.join_space_invite_code_title,
+            widget.fromOnboard
+                ? context.l10n.join_space_invitation_title
+                : context.l10n.join_space_invite_code_title,
             style: AppTextStyle.header3.copyWith(
               color: context.colorScheme.textPrimary,
             ),
@@ -81,7 +84,9 @@ class _JoinSpaceState extends ConsumerState<JoinSpace> {
           _inviteCode(context, state),
           const SizedBox(height: 40),
           Text(
-            widget.fromOnboard ? '' : context.l10n.join_space_get_code_from_space_text,
+            widget.fromOnboard
+                ? ''
+                : context.l10n.join_space_get_code_from_space_text,
             style: AppTextStyle.subtitle1.copyWith(
               color: context.colorScheme.textDisabled,
             ),
@@ -122,7 +127,12 @@ class _JoinSpaceState extends ConsumerState<JoinSpace> {
     );
   }
 
-  Widget _buildCodeBox(BuildContext context, double width, int index, JoinSpaceViewState state) {
+  Widget _buildCodeBox(
+    BuildContext context,
+    double width,
+    int index,
+    JoinSpaceViewState state,
+  ) {
     return Container(
       width: width,
       height: 64,
@@ -155,7 +165,9 @@ class _JoinSpaceState extends ConsumerState<JoinSpace> {
               if (index < 5) {
                 _focusNodes[index + 1].requestFocus();
               } else {
-                final inviteCode = _controllers.map((controller) => controller.text.trim()).join();
+                final inviteCode = _controllers
+                    .map((controller) => controller.text.trim())
+                    .join();
                 notifier.joinSpace(inviteCode);
               }
             }
@@ -177,7 +189,9 @@ class _JoinSpaceState extends ConsumerState<JoinSpace> {
             progress: state.verifying,
             enabled: enabled,
             onPressed: () {
-              final inviteCode = _controllers.map((controller) => controller.text.trim()).join();
+              final inviteCode = _controllers
+                  .map((controller) => controller.text.trim())
+                  .join();
               notifier.joinSpace(inviteCode.toUpperCase());
             },
           ),
@@ -200,9 +214,7 @@ class _JoinSpaceState extends ConsumerState<JoinSpace> {
       visible: state.errorInvalidInvitationCode || state.alreadySpaceMember,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: context.colorScheme.alert
-        ),
+        decoration: BoxDecoration(color: context.colorScheme.alert),
         child: Text(
           state.errorInvalidInvitationCode
               ? context.l10n.join_space_invalid_code_error_text
@@ -217,12 +229,14 @@ class _JoinSpaceState extends ConsumerState<JoinSpace> {
 
   void _updateJoinSpaceButtonState() {
     setState(() {
-      enabled = _controllers.every((controller) => controller.text.trim().isNotEmpty);
+      enabled =
+          _controllers.every((controller) => controller.text.trim().isNotEmpty);
     });
   }
 
   void _observeError() {
-    ref.listen(joinSpaceViewStateProvider.select((state) => state.error), (previous, next) {
+    ref.listen(joinSpaceViewStateProvider.select((state) => state.error),
+        (previous, next) {
       if (next != null) {
         showErrorSnackBar(context, next.toString());
       }
@@ -236,8 +250,7 @@ class _JoinSpaceState extends ConsumerState<JoinSpace> {
         showOkayConfirmation(
           context,
           title: context.l10n.join_space_congratulation_title,
-          message: context.l10n
-              .join_space_congratulation_subtitle(next.name),
+          message: context.l10n.join_space_congratulation_subtitle(next.name),
           onOkay: () {
             if (widget.fromOnboard) {
               AppRoute.home.go(context);
