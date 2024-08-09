@@ -1,3 +1,4 @@
+import 'package:data/service/location_manager.dart';
 import 'package:data/service/permission_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -9,13 +10,15 @@ final permissionStateProvider = StateNotifierProvider.autoDispose<
     PermissionViewNotifier, PermissionViewState>((ref) {
   return PermissionViewNotifier(
     ref.read(permissionServiceProvider),
+    ref.read(locationManagerProvider),
   );
 });
 
 class PermissionViewNotifier extends StateNotifier<PermissionViewState> {
   final PermissionService permissionService;
+  final LocationManager locationManager;
 
-  PermissionViewNotifier(this.permissionService)
+  PermissionViewNotifier(this.permissionService, this.locationManager)
       : super(const PermissionViewState()) {
     checkUserPermissions();
   }
@@ -49,6 +52,9 @@ class PermissionViewNotifier extends StateNotifier<PermissionViewState> {
       final granted =
           await permissionService.requestBackgroundLocationPermission();
       state = state.copyWith(isBackGroundLocationGranted: granted);
+      if (granted) {
+        locationManager.startTrackingService();
+      }
     } else {
       state = state.copyWith(bgAction: DateTime.now());
     }

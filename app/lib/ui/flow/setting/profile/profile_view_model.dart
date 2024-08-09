@@ -50,7 +50,7 @@ class EditProfileViewNotifier extends StateNotifier<EditProfileViewState> {
       await spaceService.deleteUserSpaces();
       await authService.deleteAccount(currentUserId: user?.id);
       state = state.copyWith(deletingAccount: false, accountDeleted: true, error: null);
-      locationManager.stopService();
+      locationManager.stopTrackingService();
     } catch (error, stack) {
       logger.e(
         'EditProfileViewState: error while delete account',

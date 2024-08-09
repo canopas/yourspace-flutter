@@ -1,4 +1,4 @@
-// ignore_for_file: constant_identifier_names, non_constant_identifier_names
+// ignore_for_file: constant_identifier_names
 
 import 'dart:async';
 
@@ -12,12 +12,13 @@ const LOCATION_UPDATE_DISTANCE = 10; // meters
 
 final locationManagerProvider = Provider((ref) => LocationManager());
 
+final bgService = FlutterBackgroundService();
+
 class LocationManager {
   LocationManager();
 
   Future<bool> isServiceRunning() async {
-    final service = FlutterBackgroundService();
-    return await service.isRunning();
+    return await bgService.isRunning();
   }
 
   Future<Position?> getLastLocation() async {
@@ -28,7 +29,11 @@ class LocationManager {
     return await Geolocator.getCurrentPosition();
   }
 
-  void stopService() {
-    FlutterBackgroundService().invoke("stopService");
+  void startTrackingService() async {
+    await bgService.startService();
+  }
+
+  void stopTrackingService() async {
+    bgService.invoke("stopService");
   }
 }

@@ -218,7 +218,7 @@ class ApiUserService {
   }
 
   void clearPreference() {
-    locationManager.stopService();
+    locationManager.stopTrackingService();
     userJsonNotifier.state = null;
     userSessionJsonNotifier.state = null;
     onBoardNotifier.state = false;

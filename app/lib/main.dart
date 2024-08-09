@@ -9,6 +9,7 @@ import 'package:data/service/location_manager.dart';
 import 'package:data/service/location_service.dart';
 import 'package:data/storage/preferences_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
@@ -31,11 +32,7 @@ void main() async {
   final container = await _initContainer();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
-  final userId = await _getUserIdFromPreferences();
-  final isLocationPermission = await Permission.location.isGranted;
-  if (userId != null && isLocationPermission) {
-    startService(userId);
-  }
+  startService();
 
   runApp(
     UncontrolledProviderScope(container: container, child: const App()),
@@ -69,25 +66,36 @@ Future<String?> _getUserIdFromPreferences() async {
   return null;
 }
 
-void startService(String userId) async {
-  final service = FlutterBackgroundService();
-  await service.configure(
+void startService() async {
+  await bgService.configure(
     androidConfiguration: AndroidConfiguration(
       onStart: onStart,
-      autoStart: true,
+      autoStart: false,
       isForegroundMode: true,
     ),
     iosConfiguration: IosConfiguration(
-      autoStart: true,
+      autoStart: false,
       onForeground: onStart,
       onBackground: onIosBackground,
     ),
   );
-  service.startService();
+
+  final isLocationPermission = await Permission.location.isGranted;
+  if (isLocationPermission) {
+    bgService.startService();
+  }
 }
 
+StreamSubscription<Position>? positionSubscription;
+Timer? timer;
+Position? _position;
+Position? _previousPosition;
+
+@pragma('vm:entry-point')
 Future<void> onStart(ServiceInstance service) async {
   WidgetsFlutterBinding.ensureInitialized();
+  final isLocationPermission = await Permission.location.isGranted;
+  if (!isLocationPermission) return;
 
   if (service is AndroidServiceInstance) {
     service.setForegroundNotificationInfo(
@@ -103,51 +111,65 @@ Future<void> onStart(ServiceInstance service) async {
   final userId = await _getUserIdFromPreferences();
 
   if (userId != null) {
-    _startLocationUpdates(userId, locationService, journeyRepository);
+    _startLocationUpdates();
+    timer = Timer.periodic(
+        const Duration(milliseconds: LOCATION_UPDATE_INTERVAL), (timer) {
+      _updateUserLocation(
+          userId, locationService, journeyRepository, _position);
+    });
   }
 
   service.on('stopService').listen((event) {
+    timer?.cancel();
+    positionSubscription?.cancel();
     service.stopSelf();
   });
 }
 
-void _startLocationUpdates(
-  String userId,
-  LocationService locationService,
-  JourneyRepository journeyRepository,
-) {
-  Timer? timer;
-  Geolocator.getPositionStream(
+void _startLocationUpdates() {
+  positionSubscription = Geolocator.getPositionStream(
     locationSettings: const LocationSettings(
       accuracy: LocationAccuracy.high,
       distanceFilter: LOCATION_UPDATE_DISTANCE,
     ),
   ).listen((position) {
-    timer?.cancel();
-    timer = Timer(const Duration(milliseconds: 5000), () async {
-      try {
-        final userState =
-            await journeyRepository.getUserState(userId, position);
-
-        await locationService.saveCurrentLocation(
-          userId,
-          LatLng(position.latitude, position.longitude),
-          DateTime.now().millisecondsSinceEpoch,
-          userState,
-        );
-
-        await journeyRepository.saveUserJourney(userState, userId, position);
-      } catch (error, stack) {
-        logger.e(
-          'Main: error while getting ot update user location and journey',
-          error: error,
-          stackTrace: stack,
-        );
-      }
-    });
+    _position = position;
   });
 }
 
+void _updateUserLocation(
+  String userId,
+  LocationService locationService,
+  JourneyRepository journeyRepository,
+  Position? position,
+) async {
+  final isSame = _previousPosition?.latitude == position?.latitude &&
+      _previousPosition?.longitude == position?.longitude;
+
+  if (isSame || position == null) return;
+  _previousPosition = position;
+
+  try {
+    final userState = await journeyRepository.getUserState(userId, position);
+
+    await locationService.saveCurrentLocation(
+      userId,
+      LatLng(position.latitude, position.longitude),
+      DateTime.now().millisecondsSinceEpoch,
+      userState,
+    );
+
+    await journeyRepository.saveUserJourney(userState, userId, position);
+  } catch (error, stack) {
+    logger.e(
+      'Main: error while getting ot update user location and journey',
+      error: error,
+      stackTrace: stack,
+    );
+  }
+}
+
+@pragma('vm:entry-point')
 bool onIosBackground(ServiceInstance service) {
   onStart(service);
   return true;
