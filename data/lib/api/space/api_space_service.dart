@@ -9,20 +9,20 @@ import '../auth/api_user_service.dart';
 import '../auth/auth_models.dart';
 
 final apiSpaceServiceProvider = StateProvider((ref) => ApiSpaceService(
-      ref.read(firestoreProvider),
+      ref.read(firestoreServiceProvider),
       ref.read(currentUserPod),
       ref.read(apiUserServiceProvider),
     ));
 
 class ApiSpaceService {
-  final FirebaseFirestore _db;
+  final FirestoreService firebase;
   final ApiUser? _currentUser;
   final ApiUserService userService;
 
-  ApiSpaceService(this._db, this._currentUser, this.userService);
+  ApiSpaceService(this.firebase, this._currentUser, this.userService);
 
   CollectionReference get _spaceRef =>
-      _db.collection("spaces").withConverter<ApiSpace>(
+      firebase.db.collection("spaces").withConverter<ApiSpace>(
           fromFirestore: ApiSpace.fromFireStore,
           toFirestore: (space, options) => space.toJson());
 
@@ -47,7 +47,7 @@ class ApiSpaceService {
   }
 
   Future<ApiSpace?> getSpace(String spaceId) async {
-    final docSnapshot = await _spaceRef.doc(spaceId).get();
+    final docSnapshot = await firebase.getDocument(_spaceRef.doc(spaceId));
     if (docSnapshot.exists) {
       return docSnapshot.data() as ApiSpace;
     }
@@ -66,8 +66,9 @@ class ApiSpaceService {
       id: const Uuid().v4(),
       created_at: DateTime.now().millisecondsSinceEpoch,
     );
+    await firebase.setDocument(
+        spaceMemberRef(spaceId).doc(userId), member.toJson());
 
-    await spaceMemberRef(spaceId).doc(userId).set(member.toJson());
     await userService.addSpaceId(userId, spaceId);
   }
 
@@ -77,7 +78,7 @@ class ApiSpaceService {
         .doc(spaceId)
         .collection('space_members');
 
-    final querySnapshot = await collectionRef.get();
+    final querySnapshot = await firebase.getQuerySnapshot(collectionRef);
     return querySnapshot.docs.map((doc) {
       return ApiSpaceMember.fromJson(doc.data());
     }).toList();
