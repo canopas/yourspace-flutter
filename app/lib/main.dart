@@ -187,7 +187,6 @@ void _startLocationUpdates() {
   positionSubscription = Geolocator.getPositionStream(
     locationSettings: const LocationSettings(
       accuracy: LocationAccuracy.high,
-      distanceFilter: LOCATION_UPDATE_DISTANCE,
     ),
   ).listen((position) {
     _position = position;

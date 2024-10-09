@@ -8,7 +8,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 const LOCATION_UPDATE_INTERVAL = 10000; // milliseconds
-const LOCATION_UPDATE_DISTANCE = 10; // meters
 
 final locationManagerProvider = Provider((ref) => LocationManager());
 
