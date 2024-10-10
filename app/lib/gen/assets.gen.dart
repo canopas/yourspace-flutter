@@ -142,6 +142,17 @@ class $AssetsImagesGen {
   AssetGenImage get icStartLocationDetailIcon =>
       const AssetGenImage('assets/images/ic_start_location_detail_icon.png');
 
+  /// File path: assets/images/ic_subscription_check_icon.svg
+  String get icSubscriptionCheckIcon =>
+      'assets/images/ic_subscription_check_icon.svg';
+
+  /// File path: assets/images/ic_subscription_icon.svg
+  String get icSubscriptionIcon => 'assets/images/ic_subscription_icon.svg';
+
+  /// File path: assets/images/ic_subscription_uncheck_icon.svg
+  String get icSubscriptionUncheckIcon =>
+      'assets/images/ic_subscription_uncheck_icon.svg';
+
   /// File path: assets/images/ic_time_line_history_icon.svg
   String get icTimeLineHistoryIcon =>
       'assets/images/ic_time_line_history_icon.svg';
@@ -210,6 +221,9 @@ class $AssetsImagesGen {
         icSetting,
         icSignOut,
         icStartLocationDetailIcon,
+        icSubscriptionCheckIcon,
+        icSubscriptionIcon,
+        icSubscriptionUncheckIcon,
         icTimeLineHistoryIcon,
         icTimelineFilterIcon,
         icUnknownBatteryIcon,

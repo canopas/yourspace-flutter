@@ -12,6 +12,13 @@ class AppTextStyle {
     package: 'style',
   );
 
+  static const TextStyle subscriptionHeader = TextStyle(
+    fontFamily: interFontFamily,
+    fontWeight: FontWeight.w700,
+    fontSize: 26,
+    letterSpacing: -0.72,
+    package: 'style',
+  );
   static const TextStyle header1 = TextStyle(
     fontFamily: interFontFamily,
     fontWeight: FontWeight.w600,
