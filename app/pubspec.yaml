@@ -55,7 +55,7 @@ dependencies:
   image_cropper: ^7.1.0
   fluttertoast: ^8.2.6
   http: ^1.2.1
-  image: ^3.0.1
+  image: ^4.2.0
   flutter_cache_manager: ^3.3.2
   permission_handler: ^11.3.1
   flutter_slidable: ^3.1.0
