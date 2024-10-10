@@ -78,6 +78,7 @@ dependencies:
   google_sign_in: ^6.1.6
   logger: ^2.3.0
   flutter_svg: ^2.0.9
+  firebase_crashlytics: ^3.5.7
   # picker
   connectivity_plus: ^6.0.5
 

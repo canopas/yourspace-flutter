@@ -14,8 +14,10 @@ import 'package:data/service/location_service.dart';
 import 'package:data/service/network_service.dart';
 import 'package:data/storage/preferences_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
@@ -79,6 +81,10 @@ void updateCurrentUserState(RemoteMessage message, NetworkService networkService
 
 Future<ProviderContainer> _initContainer() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  if (!kDebugMode) {
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  }
+
   locationService = LocationService(FirebaseFirestore.instance);
   journeyService = ApiJourneyService(FirebaseFirestore.instance);
   journeyRepository = JourneyRepository(journeyService);
